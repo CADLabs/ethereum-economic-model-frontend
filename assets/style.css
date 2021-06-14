@@ -1,0 +1,112 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.input {
+    background-color : #161f27;
+    border:1px solid #264a3d;
+    border-radius: 4px;
+    position: relative;
+}
+
+.input:focus {
+    background-color : #161f27;
+    border:1px solid #43b170;
+    box-shadow: none;
+}
+
+.input-group-addon {
+    background-color : #43b170;
+}
+
+.button {
+    background-color : #43b170;
+    border:1px solid #264a3d;
+    border-radius: 4px;
+}
+
+.button:focus {
+    background-color : #43b170;
+    border:1px solid #264a3d;
+    border-radius: 4px;
+}
+
+.validator-card {
+    background-color : #161f27;
+    border:1px solid #264a3d;
+    border-radius: 4px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.validator-input, .validator-input:focus{
+    background-color : #161f27;
+    border:1px solid #264a3d;
+    border-radius: 4px;
+    width: 200px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+
+.input-label-float {
+    position: relative;
+}
+
+.input-label-float input{
+    background-color : #161f27;
+    color: #939ba1;
+    border:1px solid #264a3d;
+    padding-top: 18px;
+    outline: none;
+    min-width: 180px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: inherit;
+    height: 60px;
+    transition: all .3s ease-out;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -webkit-appearance:none;
+    border-radius: 4px;
+}
+
+.input-label-float label{
+    color: #939ba1;
+    background-color : #161f27;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 16px;
+    margin-left: 15px;
+    font-size: 14px;
+    transition: all .3s ease-out;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+}
+
+.input-label-float input:focus{
+    background-color : #161f27;
+    border:1px solid #43b170;
+    color: #37B06F;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: inherit;
+  }
+
+.input-label-float input:focus + label,
+.input-label-float input:not(:placeholder-shown) + label{
+    background-color : #161f27;
+    color: #43b170;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-left: 5px;  
+}
+  
+
+
