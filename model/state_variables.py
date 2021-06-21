@@ -1,111 +1,188 @@
+"""
+Definition of State Variables, their types, and default values.
+
+By using a dataclass to represent the State Variables:
+* We can use types for Python type hints
+* Set default values
+* Ensure that all State Variables are initialized
+"""
+
+
 import numpy as np
+from dataclasses import dataclass
+from datetime import datetime
 
 import model.constants as constants
+import data.api.beaconchain as beaconchain
+import data.api.etherscan as etherscan
+from model.system_parameters import validator_environments
 from model.types import (
     Gwei,
+    Gwei_per_Gas,
     ETH,
     USD,
     USD_per_ETH,
     Percentage,
-    Uninitialized,
-    TypedDict,
+    Stage,
 )
-from model.parameters import validator_types
+
+# Get number of validator environments for initializing Numpy array size
+number_of_validator_environments = len(validator_environments)
+
+# Intial state from external live data source
+number_of_validators: int = beaconchain.get_validators_count()
+eth_staked: ETH = beaconchain.get_total_validator_balance() / constants.gwei
+eth_supply: ETH = etherscan.get_eth_supply() / constants.wei
 
 
-class StateVariables(TypedDict, total=True):
+@dataclass
+class StateVariables:
+    """State Variables
+    Each State Variable is defined as:
+    state variable key: state variable type = default state variable value
+    """
+
+    # Time state variables
+    stage: Stage = None
+    """
+    The stage of the network upgrade process.
+
+    By default set to PROOF_OF_STAKE Stage, where EIP1559 is enabled and POW issuance is disabled.
+
+    Otherwise set to ALL Stage, which transitions through each stage, updating the `stage` State Variable.
+
+    See model.types.Stage Enum for further documentation.
+    """
+    timestamp: datetime = None
+    """
+    The timestamp for each timestep as a Python `datetime` object, starting from `date_start` Parameter.
+    """
+
     # Ethereum state variables
-    eth_price: USD_per_ETH
-    eth_supply: ETH
-    eth_staked: ETH
-    supply_inflation: Percentage
+    eth_price: USD_per_ETH = 0
+    """The ETH spot price"""
+    eth_supply: ETH = eth_supply
+    """The total ETH supply"""
+    eth_staked: ETH = eth_staked
+    """The total ETH staked as part of the Proof of Stake system"""
+    supply_inflation: Percentage = 0
+    """The annualized ETH supply inflation"""
+    network_issuance: ETH = 0
+    """The total network issuance in ETH"""
+    pow_issuance: ETH = 0
+    """The total Proof of Work issuance in ETH"""
 
     # Validator state variables
-    average_effective_balance: Gwei
-    number_of_validators: int
-    number_of_validators_online: int
-    number_of_validators_offline: int
+    number_of_validators_in_activation_queue: int = 0
+    """The number of validators in activation queue"""
+    average_effective_balance: Gwei = 32 * constants.gwei
+    """The validator average effective balance"""
+    number_of_validators: int = number_of_validators
+    """The total number of validators"""
+    number_of_validators_online: int = 0
+    """The total number of online validators"""
+    number_of_validators_offline: int = 0
+    """The total number of offline validators"""
 
     # Reward and penalty state variables
-    base_reward: Gwei
-    validating_rewards: Gwei
-    validating_penalties: Gwei
-    source_reward: Gwei
-    target_reward: Gwei
-    head_reward: Gwei
-    block_proposer_reward: Gwei
-    sync_reward: Gwei
+    base_reward: Gwei = 0
+    """
+    Validator rewards and penalties are calculated in terms of the base reward.
+    Under perfect network conditions, each validator should receive 1 base reward per epoch for performing their duties.
+    """
+    validating_rewards: Gwei = 0
+    """The total rewards received for PoS validation (attestation, block proposal, sync vote)"""
+    validating_penalties: Gwei = 0
+    """The total penalties received for failing to perform PoS validation duties (attestation, sync vote)"""
+    source_reward: Gwei = 0
+    """The total rewards received for getting a source vote in time and correctly"""
+    target_reward: Gwei = 0
+    """The total rewards received for getting a target vote in time and correctly"""
+    head_reward: Gwei = 0
+    """The total rewards received for getting a head vote in time and correctly"""
+    block_proposer_reward: Gwei = 0
+    """The total rewards received for successfully proposing a block"""
+    sync_reward: Gwei = 0
+    """The total rewards received for attesting as part of a sync committee"""
+    attestation_penalties: Gwei = 0
+    """The total penalties received for failing to perform attestation duties"""
+    sync_committee_penalties: Gwei = 0
+    """The total penalties received for failing to perform sync committee duties"""
 
     # Slashing state variables
-    amount_slashed: Gwei
-    whistleblower_rewards: Gwei
+    amount_slashed: Gwei = 0
+    """The total penalties applied for slashable offences"""
+    whistleblower_rewards: Gwei = 0
+    """The total rewards received as a proportion of the effective balance of the slashed validators"""
 
     # EIP1559 state variables
-    total_basefee: Gwei
-    total_tips_to_validators: Gwei
+    basefee: Gwei_per_Gas = 1
+    """The basefee burned, in Gwei per gas, for each transaction, dynamically updated for each block"""
+    total_basefee: Gwei = 0
+    """The total basefee burned"""
+    total_tips_to_miners: Gwei = 0
+    """"The total tips to miners pre-merge for transactions included in blockspace"""
+    total_tips_to_validators: Gwei = 0
+    """"The total tips to validators post-merge for transactions included in blockspace"""
 
     # System metric state variables
-    validator_eth_staked: np.ndarray
-    validator_revenue: np.ndarray
-    validator_profit: np.ndarray
-    validator_revenue_yields: np.ndarray
-    validator_profit_yields: np.ndarray
+    validator_eth_staked: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The ETH staked per validator environment"""
+    validator_revenue: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The total revenue (income received) for performing PoS duties per validator environment"""
+    validator_profit: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The total profit (income received - costs) per validator environment"""
+    validator_revenue_yields: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The total annualized revenue (income received) yield (percentage of investment amount)
+    per validator environment"""
+    validator_profit_yields: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The total annualized profit (income received - costs) yield (percentage of investment amount)
+    per validator environment"""
 
-    total_online_validator_rewards: Gwei
-    total_revenue: USD
-    total_profit: USD
-    total_revenue_yields: Percentage
-    total_profit_yields: Percentage
+    validator_count_distribution: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=int
+    )
+    """The total number of validators per validator environment"""
+    validator_hardware_costs: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=USD
+    )
+    """The total validator hardware operation costs per validator environment"""
+    validator_cloud_costs: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=USD
+    )
+    """The total validator cloud operation costs per validator environment"""
+    validator_third_party_costs: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=USD
+    )
+    """The total validator third-party fee costs validator environment"""
+    validator_costs: np.ndarray = np.zeros(
+        (number_of_validator_environments, 1), dtype=USD
+    )
+    """The total validator costs validator environment"""
 
-    validator_count_distribution: np.ndarray
-    validator_hardware_costs: np.ndarray
-    validator_cloud_costs: np.ndarray
-    validator_third_party_costs: np.ndarray
-    validator_costs: np.ndarray
-    total_network_costs: USD
+    total_online_validator_rewards: Gwei = 0
+    """The total rewards received by online validators"""
+    total_network_costs: USD = 0
+    """The total validator operational costs for securing the network"""
+    total_revenue: USD = 0
+    """The total validator revenue (income received)"""
+    total_profit: USD = 0
+    """The total validator profit (income received - costs)"""
+    total_revenue_yields: Percentage = 0
+    """Annualized revenue (income received) for all validators"""
+    total_profit_yields: Percentage = 0
+    """Annualized profit (income received - costs) for all validators"""
 
 
-# Get number of validator types for initializing Numpy array size
-number_of_validator_types = len(validator_types)
-
-# TODO use np.nan for unintialized/unknown initial values
-# NOTE https://numpy.org/doc/stable/reference/generated/numpy.nan_to_num.html
-
-initial_state = StateVariables(
-    eth_price=0,
-    eth_supply=112_000_000,
-    eth_staked=0,
-    supply_inflation=0,
-    average_effective_balance=32 * constants.gwei,
-    number_of_validators=0,
-    number_of_validators_online=0,
-    number_of_validators_offline=0,
-    base_reward=0,
-    validating_rewards=0,
-    validating_penalties=0,
-    source_reward=0,
-    target_reward=0,
-    head_reward=0,
-    block_proposer_reward=0,
-    sync_reward=0,
-    amount_slashed=0,
-    whistleblower_rewards=0,
-    total_basefee=0,
-    total_tips_to_validators=0,
-    validator_eth_staked=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_revenue=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_profit=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_revenue_yields=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_profit_yields=np.zeros((number_of_validator_types, 1), dtype=int),
-    total_online_validator_rewards=0,
-    total_revenue=0,
-    total_profit=0,
-    total_revenue_yields=0,
-    total_profit_yields=0,
-    validator_count_distribution=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_hardware_costs=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_cloud_costs=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_third_party_costs=np.zeros((number_of_validator_types, 1), dtype=int),
-    validator_costs=np.zeros((number_of_validator_types, 1), dtype=int),
-    total_network_costs=0,
-)
+# Initialize State Variables instance with default values
+initial_state = StateVariables().__dict__

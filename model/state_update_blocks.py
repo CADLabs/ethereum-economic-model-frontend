@@ -1,44 +1,61 @@
 import model.parts.ethereum as ethereum
-import model.parts.validators as validators
-import model.parts.proof_of_stake as proof_of_stake
+import model.parts.incentives as incentives
 import model.parts.metrics as metrics
+import model.parts.stages as stages
+import model.parts.validators as validators
+from model.system_parameters import parameters
 from model.utils import update_from_signal
 
+state_update_block_stages = {
+    "description": """
+    Transition between stages of network upgrade process
+    """,
+    "policies": {"update_stages": stages.policy_stages},
+    "variables": {
+        "stage": update_from_signal("stage"),
+        "timestamp": update_from_signal("timestamp"),
+    },
+}
+
+state_update_block_staking = {
+    "description": """
+        Environmental Ethereum processes:
+        * ETH price update
+        * Staking of ETH for new validators
+    """,
+    "policies": {
+        "staking": validators.policy_staking,
+    },
+    "variables": {
+        "eth_price": ethereum.update_eth_price,
+        "eth_staked": update_from_signal("eth_staked"),
+    },
+}
+
+state_update_block_validators = {
+    "description": """
+        Environmental validator processes:
+        * New validators
+        * Online and offline validators
+    """,
+    "policies": {
+        "policy_validators": validators.policy_validators,
+    },
+    "variables": {
+        "number_of_validators_in_activation_queue": update_from_signal(
+            "number_of_validators_in_activation_queue"
+        ),
+        "number_of_validators": update_from_signal("number_of_validators"),
+        "number_of_validators_online": update_from_signal(
+            "number_of_validators_online"
+        ),
+        "number_of_validators_offline": update_from_signal(
+            "number_of_validators_offline"
+        ),
+    },
+}
 
 _state_update_blocks = [
-    {
-        "description": """
-            Exogenous Ethereum processes:
-            * ETH price update
-            * Staking of ETH for new validators
-        """,
-        "policies": {
-            "staking": validators.policy_staking,
-        },
-        "variables": {
-            "eth_price": ethereum.update_eth_price,
-            "eth_staked": update_from_signal("eth_staked"),
-        },
-    },
-    {
-        "description": """
-            Validator processes:
-            * New validators
-            * Online and offline validators
-        """,
-        "policies": {
-            "policy_validators": validators.policy_validators,
-        },
-        "variables": {
-            "number_of_validators": update_from_signal("number_of_validators"),
-            "number_of_validators_online": update_from_signal(
-                "number_of_validators_online"
-            ),
-            "number_of_validators_offline": update_from_signal(
-                "number_of_validators_offline"
-            ),
-        },
-    },
     {
         "description": """
             Calculation and update of validator average effective balance & base reward
@@ -50,7 +67,7 @@ _state_update_blocks = [
             "average_effective_balance": update_from_signal(
                 "average_effective_balance"
             ),
-            "base_reward": proof_of_stake.update_base_reward,
+            "base_reward": incentives.update_base_reward,
         },
     },
     {
@@ -58,8 +75,8 @@ _state_update_blocks = [
             Sync committee and attestation rewards
         """,
         "policies": {
-            "casper_ffg_vote": proof_of_stake.policy_attestation_rewards,
-            "sync_committee": proof_of_stake.policy_sync_committee,
+            "attestation": incentives.policy_attestation_rewards,
+            "sync_committee": incentives.policy_sync_committee_reward,
         },
         "variables": {
             "source_reward": update_from_signal("source_reward"),
@@ -70,10 +87,23 @@ _state_update_blocks = [
     },
     {
         "description": """
+            Sync committee and attestation penalties
+        """,
+        "policies": {
+            "attestation": incentives.policy_attestation_penalties,
+            "sync_committee": incentives.policy_sync_committee_penalties,
+        },
+        "variables": {
+            "attestation_penalties": update_from_signal("attestation_penalties"),
+            "sync_committee_penalties": update_from_signal("sync_committee_penalties"),
+        },
+    },
+    {
+        "description": """
             Block proposal rewards
         """,
         "policies": {
-            "block_proposal": proof_of_stake.policy_block_proposal,
+            "block_proposal": incentives.policy_block_proposal_reward,
         },
         "variables": {
             "block_proposer_reward": update_from_signal("block_proposer_reward"),
@@ -83,12 +113,10 @@ _state_update_blocks = [
         "description": """
             Total validating rewards and penalties
         """,
-        "policies": {
-            "penalties": proof_of_stake.policy_attestation_penalties,
-        },
+        "policies": {},
         "variables": {
-            "validating_rewards": proof_of_stake.update_validating_rewards,
-            "validating_penalties": update_from_signal("validating_penalties"),
+            "validating_rewards": incentives.update_validating_rewards,
+            "validating_penalties": incentives.update_validating_penalties,
         },
     },
     {
@@ -96,7 +124,7 @@ _state_update_blocks = [
             Validator slashing process, rewards, and penalties
         """,
         "policies": {
-            "slashing": proof_of_stake.policy_slashing,
+            "slashing": incentives.policy_slashing,
         },
         "variables": {
             "amount_slashed": update_from_signal("amount_slashed"),
@@ -111,24 +139,37 @@ _state_update_blocks = [
             "eip1559": ethereum.policy_eip1559_transaction_pricing,
         },
         "variables": {
+            "basefee": update_from_signal("basefee"),
             "total_basefee": update_from_signal("total_basefee"),
+            "total_tips_to_miners": update_from_signal("total_tips_to_miners"),
             "total_tips_to_validators": update_from_signal("total_tips_to_validators"),
         },
     },
     {
         "description": """
-            Online validator reward aggregation, and accounting of Ethereum issuance & inflation 
+            Online validator reward aggregation
         """,
         "policies": {
             "calculate_total_online_validator_rewards": metrics.policy_total_online_validator_rewards,
-            "issuance": ethereum.policy_network_issuance,
         },
         "variables": {
             "total_online_validator_rewards": update_from_signal(
                 "total_online_validator_rewards"
             ),
+        },
+    },
+    {
+        "description": """
+            Accounting of Ethereum issuance & inflation
+        """,
+        "policies": {
+            "issuance": ethereum.policy_network_issuance,
+        },
+        "variables": {
             "eth_supply": ethereum.update_eth_supply,
             "supply_inflation": metrics.update_supply_inflation,
+            "network_issuance": update_from_signal("network_issuance"),
+            "pow_issuance": update_from_signal("pow_issuance"),
         },
     },
     {
@@ -173,6 +214,24 @@ _state_update_blocks = [
         },
     },
 ]
+
+# Conditionally update the order of the State Update Blocks
+_state_update_blocks = (
+    [
+        state_update_block_stages,
+        state_update_block_staking,
+        state_update_block_validators,
+    ]
+    + _state_update_blocks
+    if parameters["eth_staked_process"][0](0, 0) != None
+    # If driving with validator process, switch first two blocks
+    else [
+        state_update_block_stages,
+        state_update_block_validators,
+        state_update_block_staking,
+    ]
+    + _state_update_blocks
+)
 
 # Split the state update blocks into those used during the simulation (state_update_blocks)
 # and those used in post-processing to calculate the system metrics (post_processing_blocks)
