@@ -1,25 +1,36 @@
-from radcad import Model, Simulation, Experiment, Engine
 import pandas as pd
+import logging
+import sys
+from datetime import datetime
 
-from model.parameters import parameters
-from model.state_variables import initial_state
-from model.state_update_blocks import state_update_blocks
-from model.simulation_configuration import TIMESTEPS, MONTE_CARLO_RUNS
+from experiments.base import experiment
+from experiments.post_processing import post_process
 
 
-def run(parameters=parameters):
-  model = Model(params=parameters, initial_state=initial_state, state_update_blocks=state_update_blocks)
-  simulation = Simulation(model=model, timesteps=TIMESTEPS, runs=MONTE_CARLO_RUNS)
-  experiment = Experiment([simulation])
-  experiment.engine = Engine(drop_substeps=True)
-  print("Running experiment")
+# Configure logging framework
+# e.g. Use logging.debug(...) to log to log file
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+# handler = logging.FileHandler(filename=f'logs/experiment-{datetime.now()}.log')
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
+def run(experiment=experiment):
+  logging.info("Running experiment")
   experiment.run()
-  print("Experiment complete")
+  logging.info("Experiment complete")
 
-  return experiment.results, experiment.exceptions
+  logging.info("Post-processing results")
+  df = pd.DataFrame(experiment.results)
+  df = post_process(df)
+  logging.info("Post-processing complete")
+
+  return df, experiment.exceptions
+
 
 if __name__ == '__main__':
-  results, _exceptions = run()
-
-  results_dataframe = pd.DataFrame(results)
-  print(results_dataframe)
+  df, _exceptions = run()
+  print(df)

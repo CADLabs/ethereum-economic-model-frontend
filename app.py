@@ -4,34 +4,32 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
+import dash_auth
+import os
+from dotenv import load_dotenv
 
 import pandas as pd
 import numpy as np
 import copy
 
-from model.parameters import parameters
+from model.system_parameters import parameters
+from experiments.base import experiment
 from experiments.run import run
 from experiments.post_processing import post_process
-from model.types import (
-    Run,
-    Timestep,
-    Percentage,
-    Gwei,
-    Gas,
-    ETH,
-    USD_per_epoch,
-    Percentage_per_epoch,
-    ValidatorType,
-    TypedDict,
-    List,
-    Callable,
-)
+from model.types import Percentage
 
 # Plotting dependencies
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 pd.options.plotting.backend = "plotly"
+
+load_dotenv()
+USERNAME = os.environ.get('USERNAME')
+PASSWORD = os.environ.get('PASSWORD')
+VALID_USERNAME_PASSWORD_PAIRS = {
+    USERNAME: PASSWORD
+}
 
 CONTENT_STYLE = {
     "padding-top": "6rem",
@@ -78,6 +76,10 @@ def plot_revenue_yields_vs_network_inflation(df):
     return fig
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX])
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
 server = app.server
 
 initial_df = pd.read_csv('data/data.csv', index_col=0)
@@ -385,7 +387,7 @@ def toggle_collapse_validator(n, is_open):
 
 @app.callback(
     Output("BASE_REWARD_FACTOR", "value"),
-    Output("BASE_REWARDS_PER_EPOCH", "value"),
+    #Output("BASE_REWARDS_PER_EPOCH", "value"),
     Output("MAX_EFFECTIVE_BALANCE", "value"),
     Output("EFFECTIVE_BALANCE_INCREMENT", "value"),
     Output("PROPOSER_REWARD_QUOTIENT", "value"),
@@ -395,22 +397,23 @@ def toggle_collapse_validator(n, is_open):
 )
 def load_eth2_specs_defaults(n_clicks):
     base_reward_factor = parameters['BASE_REWARD_FACTOR'][0]
-    base_rewards_per_epoch = parameters['BASE_REWARDS_PER_EPOCH'][0]
+    #base_rewards_per_epoch = parameters['BASE_REWARDS_PER_EPOCH'][0]
     max_effective_balance = parameters['MAX_EFFECTIVE_BALANCE'][0]/1e9
     effective_balance_increment = parameters['EFFECTIVE_BALANCE_INCREMENT'][0]/1e9
     proposer_reward_quotient = parameters['PROPOSER_REWARD_QUOTIENT'][0]
     whistleblower_reward_quotient = parameters['WHISTLEBLOWER_REWARD_QUOTIENT'][0]
     min_slashing_penalty_quotient = parameters['MIN_SLASHING_PENALTY_QUOTIENT'][0]
 
-    return (base_reward_factor, base_rewards_per_epoch, max_effective_balance,
-            effective_balance_increment, proposer_reward_quotient,
+    return (base_reward_factor, 
+            #base_rewards_per_epoch, 
+            max_effective_balance, effective_balance_increment, proposer_reward_quotient,
             whistleblower_reward_quotient, min_slashing_penalty_quotient)
 
 
 @app.callback(
     Output("validator_internet_uptime", "value"),
-    Output("validator_power_uptime", "value"),
-    Output("validator_technical_uptime", "value"),
+    #Output("validator_power_uptime", "value"),
+    #Output("validator_technical_uptime", "value"),
     Output("diy_hardware_distribution", "value"),
     Output("diy_cloud_distribution", "value"),
     Output("pool_staas_distribution", "value"),
@@ -428,10 +431,10 @@ def load_eth2_specs_defaults(n_clicks):
     Output("validator_distribution_weighted_avg_cost", "value"),
     [Input("button-validator-specs-default", "n_clicks")]
 )
-def load_eth2_specs_defaults(n_clicks):
-    validator_internet_uptime = 100 * parameters['validator_internet_uptime'][0]
-    validator_power_uptime = 100 * parameters['validator_power_uptime'][0]
-    validator_technical_uptime = 100 * parameters['validator_technical_uptime'][0]
+def load_validator_specs_defaults(n_clicks):
+    validator_internet_uptime = 100 * parameters['validator_uptime_process'][0](0,0)
+    #validator_power_uptime = 100 * parameters['validator_power_uptime'][0]
+    #validator_technical_uptime = 100 * parameters['validator_technical_uptime'][0]
     
     diy_hardware_distribution = 100 * parameters['validator_percentage_distribution'][0][0]
     diy_cloud_distribution = 100 * parameters['validator_percentage_distribution'][0][1]
@@ -457,8 +460,9 @@ def load_eth2_specs_defaults(n_clicks):
                                                     staas_self_custodied_distribution * staas_self_custodied_cost
                                                     ])/100
 
-    return (validator_internet_uptime, validator_power_uptime,
-            validator_technical_uptime, diy_hardware_distribution,
+    return (validator_internet_uptime, 
+            #validator_power_uptime, validator_technical_uptime, 
+            diy_hardware_distribution,
             diy_cloud_distribution, pool_staas_distribution,
             pool_hardware_distribution, pool_cloud_distribution,
             staas_full_distribution, staas_self_custodied_distribution,
@@ -507,7 +511,7 @@ def calc_total_validator_distribution(diy_hardware_distribution,
     Output("eth_revenue_profit_graph", "figure"),
     [Input("button-run-simulation", "n_clicks")],
     [State("BASE_REWARD_FACTOR", "value"),
-    State("BASE_REWARDS_PER_EPOCH", "value"),
+    #State("BASE_REWARDS_PER_EPOCH", "value"),
     State("MAX_EFFECTIVE_BALANCE", "value"),
     State("EFFECTIVE_BALANCE_INCREMENT", "value"),
 
@@ -516,8 +520,8 @@ def calc_total_validator_distribution(diy_hardware_distribution,
     State("MIN_SLASHING_PENALTY_QUOTIENT", "value"),
         
     State("validator_internet_uptime", "value"),
-    State("validator_power_uptime", "value"),
-    State("validator_technical_uptime", "value"),
+    #State("validator_power_uptime", "value"),
+    #State("validator_technical_uptime", "value"),
     State("diy_hardware_distribution", "value"),
     State("diy_cloud_distribution", "value"),
     State("pool_staas_distribution", "value"),
@@ -537,12 +541,15 @@ def calc_total_validator_distribution(diy_hardware_distribution,
     State("eth_revenue_network_costs_graph", "figure"),
     State("eth_revenue_profit_graph", "figure")],
 )
-def run_simulation(n_clicks, BASE_REWARD_FACTOR, BASE_REWARDS_PER_EPOCH,
+def run_simulation(n_clicks, BASE_REWARD_FACTOR, 
+                   #BASE_REWARDS_PER_EPOCH,
                    MAX_EFFECTIVE_BALANCE, EFFECTIVE_BALANCE_INCREMENT,
                    PROPOSER_REWARD_QUOTIENT, WHISTLEBLOWER_REWARD_QUOTIENT,
                    MIN_SLASHING_PENALTY_QUOTIENT,
-                   validator_internet_uptime, validator_power_uptime,
-                   validator_technical_uptime, diy_hardware_distribution,
+                   validator_internet_uptime,
+                   #validator_power_uptime,
+                   #validator_technical_uptime,
+                   diy_hardware_distribution,
                    diy_cloud_distribution, pool_staas_distribution,
                    pool_hardware_distribution, pool_cloud_distribution,
                    staas_full_distribution, staas_self_custodied_distribution,
@@ -554,7 +561,7 @@ def run_simulation(n_clicks, BASE_REWARD_FACTOR, BASE_REWARDS_PER_EPOCH,
     if n_clicks is not None:
         selected_parameters = copy.deepcopy(parameters)
         selected_parameters['BASE_REWARD_FACTOR'] = [BASE_REWARD_FACTOR]
-        selected_parameters['BASE_REWARDS_PER_EPOCH'] = [BASE_REWARDS_PER_EPOCH]
+        #selected_parameters['BASE_REWARDS_PER_EPOCH'] = [BASE_REWARDS_PER_EPOCH]
         selected_parameters['MAX_EFFECTIVE_BALANCE'] = [1e9 * MAX_EFFECTIVE_BALANCE]
         selected_parameters['EFFECTIVE_BALANCE_INCREMENT'] = [1e9 * EFFECTIVE_BALANCE_INCREMENT]
         selected_parameters['PROPOSER_REWARD_QUOTIENT'] = [PROPOSER_REWARD_QUOTIENT]
@@ -562,8 +569,8 @@ def run_simulation(n_clicks, BASE_REWARD_FACTOR, BASE_REWARDS_PER_EPOCH,
         selected_parameters['MIN_SLASHING_PENALTY_QUOTIENT'] = [MIN_SLASHING_PENALTY_QUOTIENT]
 
         selected_parameters['validator_internet_uptime'] = [round(validator_internet_uptime/100,4)]
-        selected_parameters['validator_power_uptime'] = [round(validator_power_uptime/100, 4)]
-        selected_parameters['validator_technical_uptime'] = [round(validator_technical_uptime/100, 4)]
+        #selected_parameters['validator_power_uptime'] = [round(validator_power_uptime/100, 4)]
+        #selected_parameters['validator_technical_uptime'] = [round(validator_technical_uptime/100, 4)]
 
         selected_parameters['validator_percentage_distribution'] = [np.array([diy_hardware_distribution,
                                                                             diy_cloud_distribution,
@@ -586,7 +593,7 @@ def run_simulation(n_clicks, BASE_REWARD_FACTOR, BASE_REWARDS_PER_EPOCH,
                                                                                0, 0,staas_full_cost,
                                                                                staas_self_custodied_cost],
                                                                                dtype=Percentage)]
-        results, exceptions = run(parameters=selected_parameters)
+        results, exceptions = run(experiment=experiment)
         df = pd.DataFrame(results)
         df = df.drop(df.query('timestep == 0').index)
         df = post_process(df)
