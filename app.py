@@ -34,7 +34,7 @@ VALID_USERNAME_PASSWORD_PAIRS = {
 CONTENT_STYLE = {
     "padding-top": "6rem",
     "padding-bottom": "4rem",
-    "background-image": "linear-gradient(#2b6555, #171e27)"
+    "background-image": "linear-gradient(#F05F5F, #D644BC)"
 }
 
 
@@ -76,6 +76,7 @@ def plot_revenue_yields_vs_network_inflation(df):
     return fig
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX])
+app.title = "Eth2 Calculator"
 auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
@@ -101,7 +102,7 @@ fig_eth_revenue_profit.update_layout(legend=dict(yanchor="top",y=0.99,xanchor="l
 exogenous_processes = html.Div(
     [
         html.H3('Exogenous Processes', style={"color": "white"}),
-        html.Hr(style={"background-color": "#43b170"}),
+        html.Hr(className="under-title"),
         dbc.Row(
             [
                 dbc.Col([
@@ -138,7 +139,7 @@ eth2_specs = html.Div(
         dbc.Collapse([
         html.Hr(),
         html.H3('Eth2 Specs', style={"color": "white"}),
-        html.Hr(style={"background-color": "#43b170"}),
+        html.Hr(className="under-title"),
         dbc.Row(
             [
                 dbc.Col([
@@ -192,7 +193,7 @@ eth2_specs = html.Div(
 validator_uptime = html.Div(
     [
         html.H3('Validator Parameters', style={"color": "white"}),
-        html.Hr(style={"background-color": "#43b170"}),
+        html.Hr(className="under-title"),
         dbc.Row(
             [
                 dbc.Col([
@@ -304,7 +305,7 @@ validator_percentage_distribution = html.Div(
 eip1559 = html.Div(
     [
         html.H3('EIP1559', style={"color": "white"}),
-        html.Hr(style={"background-color": "#43b170"}),
+        html.Hr(className="under-title"),
         dbc.Row(
             [
                 dbc.Col([
@@ -318,7 +319,7 @@ eip1559 = html.Div(
 
 output_graphs = html.Div([
         html.H1('Graph', style={"color": "white"}),
-        html.Hr(style={"background-color": "#43b170"}),
+        html.Hr(className="under-title"),
         dbc.Row([
             dbc.Col([
                 dcc.Graph(id='eth_yield_graph', figure=fig_eth_yield),
@@ -351,11 +352,11 @@ card_graph = dbc.Card(
         html.Hr(),
         output_graphs
         ]
-), body=True, color="#1a2c33")
+), body=True, color="#272838")
 
 app.layout = html.Div([
     dbc.Row([dbc.Col(html.H1("Eth2 Staking Calculator", style={"color": "white"}), width=10)], justify="around"),
-    dbc.Row([dbc.Col(card_graph, width=10)], justify="around"),  # justify="start", "center", "end", "between", "around"
+    dbc.Row([dbc.Col(card_graph, width=10)], justify="around"),
 ],
    style=CONTENT_STYLE
 )
