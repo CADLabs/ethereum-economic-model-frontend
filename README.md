@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 To execute the dashboard locally:
 ```bash
-python app.py
+python index.py
 ```
 
 ## Deployment
