@@ -1,4 +1,4 @@
-from app import app
+from app import app, server
 
 from layout.eth2_specs.eth2_specs_callbacks import toggle_collapse_eth2
 from layout.validator_specs.validator_specs_callbacks import (toggle_collapse_validator,
