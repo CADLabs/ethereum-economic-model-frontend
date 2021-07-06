@@ -19,9 +19,9 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
 multiprocess==0.70.11.1
-numpy==1.20.2
+numpy
 packaging==20.9
-pandas==1.2.3
+pandas
 pathos==0.2.7
 plotly==4.14.3
 pluggy==0.13.1
