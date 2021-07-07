@@ -1,13 +1,19 @@
 import requests
 import diskcache
-import os
-from dotenv import load_dotenv
+import logging
 
 from model.types import Wei
 
-load_dotenv()
+
 cache = diskcache.Cache('.etherscan_api.cache')
 
+
 @cache.memoize(expire=(6 * 60 * 60))  # cached for 6 hours
-def get_eth_supply() -> Wei:
-    return int(requests.get("https://api.etherscan.io/api?module=stats&action=ethsupply", headers={"accept": "application/json", "apikey":os.environ.get('ETHERSCANAPIKEY')}).json()["result"])
+def get_eth_supply(default=None) -> Wei:
+    try:
+        req = requests.get("https://api.etherscan.io/api?module=stats&action=ethsupply", headers={"accept": "application/json"})
+        req.raise_for_status()
+        return int(req.json()["result"])
+    except requests.exceptions.HTTPError as err:
+        logging.error(err)
+        return default
