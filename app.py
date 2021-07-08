@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from utils import visualizations
 import flask
+from flask_caching import Cache
 
 # Plotly custom theme
 import plotly.io as pio
@@ -40,7 +41,15 @@ app = dash.Dash(__name__,
                 server=server,
                 suppress_callback_exceptions=True,
                 external_stylesheets=[dbc.themes.LUX])
-    
+
+
+CACHE_CONFIG = {
+    'CACHE_TYPE': 'FileSystemCache',
+    'CACHE_DIR': './cache'
+}
+cache = Cache()
+cache.init_app(app.server, config=CACHE_CONFIG)
+
 app.title = "Eth2 Calculator"
 app.layout = layout
 
@@ -98,6 +107,7 @@ def update_validator_adoption_sliders_by_scenarios(validator_dropdown):
      Input("eip1559-basefee-slider", "value"),
      Input("eip1559-validator-tips-slider", "value")]
 )
+@cache.memoize()
 def update_output_graph(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips):
     df_0, parameters = run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips)
     if validator_adoption not in [1.5, 3, 4.5]:
