@@ -42,7 +42,7 @@ app = dash.Dash(__name__,
 app.title = "Eth2 Calculator"
 app.layout = layout
 
-def run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips):
+def run_simulation(validator_adoption, pos_launch_date, eip1559_basefee):
     # Fetch the time-domain analysis experiment
     experiment = time_domain_analysis.experiment
     # Create a copy of the experiment simulation
@@ -58,9 +58,6 @@ def run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559
         'eip1559_basefee_process': [
         lambda _run, _timestep: float(eip1559_basefee), 
     ],  # Gwei per gas
-    'eip1559_tip_process': [
-        lambda _run, _timestep: float(eip1559_validator_tips),
-    ],  # Gwei per gas
     })
 
     df_0, _exceptions = run(simulation_0)
@@ -69,14 +66,13 @@ def run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559
 # Callbacks
 @app.callback(
     Output('eip1559-basefee-slider', 'value'),
-    Output('eip1559-validator-tips-slider', 'value'),
     [Input('eip1559-dropdown', 'value')]
 )
 def update_eip1559_sliders_by_scenarios(eip1559_dropdown):
-    eip1559_scenarios = {'Disabled': [0, 0], 'Enabled: Steady State': [100, 1], 'Enabled: MEV':[70, 30]}
+    eip1559_scenarios = {'Disabled': 0, 'Enabled: Steady State': 100, 'Enabled: MEV':70}
     if eip1559_dropdown == 'Custom':
         raise PreventUpdate
-    return eip1559_scenarios[eip1559_dropdown][0], eip1559_scenarios[eip1559_dropdown][1]
+    return eip1559_scenarios[eip1559_dropdown]
 
 @app.callback(
     Output('validator-adoption-slider', 'value'),
@@ -95,21 +91,23 @@ def update_validator_adoption_sliders_by_scenarios(validator_dropdown):
     Input("validator-adoption-slider", "value"),
      Input("pos-launch-date-dropdown", "value"),
      Input("eip1559-basefee-slider", "value"),
-     Input("eip1559-validator-tips-slider", "value"),
 )
 def update_output_graph(validator_adoption,
                         pos_launch_date,
-                        eip1559_basefee,
-                        eip1559_validator_tips):
-    df_0, parameters = run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips)
+                        eip1559_basefee):
+    df_0, parameters = run_simulation(
+        validator_adoption,
+        pos_launch_date,
+        eip1559_basefee
+    )
     if validator_adoption not in [1.5, 3, 4.5]:
         validator_adoption = 'Custom'
     
-    eip1559_fees = [eip1559_basefee, eip1559_validator_tips]
-    if eip1559_fees in [[0, 0], [100, 1], [70, 30]]:
-        if eip1559_fees == [0, 0]:
+    eip1559_fees = [eip1559_basefee]
+    if eip1559_fees in [0, 100, 70]:
+        if eip1559_fees == 0:
             eip1559 = 'Disabled'
-        elif eip1559_fees == [100, 1]:
+        elif eip1559_fees == 100:
             eip1559 = 'Enabled: Steady State'
         else:
             eip1559 = 'Enabled: MEV'
