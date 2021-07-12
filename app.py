@@ -1,7 +1,7 @@
 # Dash dependencies
 import dash
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from utils import visualizations
 import flask
@@ -9,7 +9,7 @@ import flask
 # Plotly custom theme
 import plotly.io as pio
 from assets import plotly_theme
-pio.templates.default = "cadlabs_frontend"
+pio.templates.default = "cadlabs"
 
 # Import layout components
 from layout.layout import layout
@@ -33,8 +33,6 @@ import experiments.templates.time_domain_analysis as time_domain_analysis
 
 
 server = flask.Flask(__name__) # define flask app.server
-
-
 
 app = dash.Dash(__name__,
                 server=server,
@@ -93,12 +91,16 @@ def update_validator_adoption_sliders_by_scenarios(validator_dropdown):
     Output('validator-dropdown', 'value'),
     Output('eip1559-dropdown', 'value'),
     Output('graph', 'figure'),
-    [Input("validator-adoption-slider", "value"),
+
+    Input("validator-adoption-slider", "value"),
      Input("pos-launch-date-dropdown", "value"),
      Input("eip1559-basefee-slider", "value"),
-     Input("eip1559-validator-tips-slider", "value")]
+     Input("eip1559-validator-tips-slider", "value"),
 )
-def update_output_graph(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips):
+def update_output_graph(validator_adoption,
+                        pos_launch_date,
+                        eip1559_basefee,
+                        eip1559_validator_tips):
     df_0, parameters = run_simulation(validator_adoption, pos_launch_date, eip1559_basefee, eip1559_validator_tips)
     if validator_adoption not in [1.5, 3, 4.5]:
         validator_adoption = 'Custom'
@@ -111,7 +113,6 @@ def update_output_graph(validator_adoption, pos_launch_date, eip1559_basefee, ei
             eip1559 = 'Enabled: Steady State'
         else:
             eip1559 = 'Enabled: MEV'
-            
     else:
         eip1559 = 'Custom'
 
