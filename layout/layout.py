@@ -95,25 +95,6 @@ layout = html.Div([
                     value=100,
                     tooltip={'placement': 'top'},
                 )
-            ]),
-            # Validator Tips Slider
-            html.Div([
-                html.Label("Average Priority Fee (Gwei per gas)"),
-                dcc.Slider(
-                    id='eip1559-validator-tips-slider',
-                    min=0,
-                    max=100,
-                    step=1,
-                    marks={
-                        0: '0',
-                        25: '25',
-                        50: '50',
-                        75: '75',
-                        100: '100'
-                    },
-                    value=1,
-                    tooltip={'placement': 'top'}
-                )
             ])
         ], className='eip1559-section')
     ], className='input-row'),
