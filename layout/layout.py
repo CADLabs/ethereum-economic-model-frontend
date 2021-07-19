@@ -87,12 +87,10 @@ layout = html.Div([
                     step=10,
                     marks={
                         0: '0',
-                        25: '25',
                         50: '50',
-                        75: '75',
                         100: '100'
                     },
-                    value=100,
+                    value=90,
                     tooltip={'placement': 'top'},
                 )
             ])
@@ -103,7 +101,7 @@ layout = html.Div([
     html.Div([
         dcc.Loading(
             id='loading-1',
-            children=[dcc.Graph(id='graph')],
+            children=[dcc.Graph(id='graph', className='output-graph')],
             type='default'
         )
     ], className='output-row')

@@ -14,11 +14,8 @@ pio.templates.default = "cadlabs_frontend"
 # Import layout components
 from layout.layout import layout
 
-# From notebook
-#from utils import setup
 import pandas as pd
-
-import utils.visualizations as visualizations
+from datetime import datetime
 
 # Import experiment templates
 
@@ -53,16 +50,16 @@ def load_simulation(validator_adoption, pos_launch_date, eip1559_basefee):
     historical_eth_supply = historical_data['eth_supply']
     historical_timestamp = historical_data['timestamp']
 
+    simulation_supply_inflation_pct = simulation_data[simulation_data_lookup]['supply_inflation_pct']
+    simulation_eth_supply = simulation_data[simulation_data_lookup]['eth_supply']
+    simulation_timestamp = simulation_data['timestamp']
+
     data_historical = {
         'timestamp': historical_timestamp,
         'eth_supply': historical_eth_supply,
         'supply_inflation_pct': historical_supply_inflation_pct,
         'subset': 0
     }
-
-    simulation_supply_inflation_pct = simulation_data[simulation_data_lookup]['supply_inflation_pct']
-    simulation_eth_supply = simulation_data[simulation_data_lookup]['eth_supply']
-    simulation_timestamp = simulation_data['timestamp']
 
     data_simulation = {
         'timestamp': simulation_timestamp,
@@ -73,12 +70,17 @@ def load_simulation(validator_adoption, pos_launch_date, eip1559_basefee):
 
     df_historical_data = pd.DataFrame.from_dict(data_historical)
     df_historical_data['timestamp'] = pd.to_datetime(df_historical_data['timestamp'])
-     
 
     df_simulation_data = pd.DataFrame.from_dict(data_simulation)
     df_simulation_data['timestamp'] = pd.to_datetime(df_simulation_data['timestamp'])
 
-    fig = visualizations.plot_eth_supply_and_inflation_over_all_stages(df_historical_data, df_simulation_data)
+    parameters = {}
+    parameters["date_eip1559"] = [datetime.strptime("2021/07/14", "%Y/%m/%d")]
+    parameters["date_pos"] = [datetime.strptime(pos_launch_date, "%Y/%m/%d")]
+
+    fig = visualizations.plot_eth_supply_and_inflation(df_historical_data,
+                                                       df_simulation_data,
+                                                       parameters=parameters)
     return fig
 
 
@@ -138,20 +140,20 @@ def update_output_graph(validator_adoption,
     else:
         validator_dropdown = 'Custom'
     
-    eip1559_fees = eip1559_basefee
-    if eip1559_fees == 0:
-        eip1559 = 'Disabled'
-    elif eip1559_fees == 90:
-        eip1559 = 'Enabled: Steady State'
-    elif eip1559_fees == 70:
-        eip1559 = 'Enabled: MEV'
+    eip1559_basefee = int(eip1559_basefee)
+    if int(eip1559_basefee) == 0:
+        eip1559_dropdown = 'Disabled'
+    elif int(eip1559_basefee) == 90:
+        eip1559_dropdown = 'Enabled: Steady State'
+    elif eip1559_basefee == 70:
+        eip1559_dropdown = 'Enabled: MEV'
     else:
-        eip1559 = 'Custom'
+        eip1559_dropdown = 'Custom'
 
     fig = load_simulation(validator_adoption, pos_launch_date, eip1559_basefee)
 
     return (validator_dropdown,
-            eip1559,
+            eip1559_dropdown,
             fig)
 
 if __name__ == '__main__':
