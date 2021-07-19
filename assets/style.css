@@ -1,5 +1,6 @@
 body{
-    margin: 40px;
+    margin: 20px;
+    background-image: linear-gradient(#ffe5f8, #e9e8fa);
 }
 h1 {
     font-size: 24px;
@@ -41,5 +42,5 @@ h1 {
     height: 200px;
 }
 .output-row{
-    height: 400px;
+    height: 300px;
 }

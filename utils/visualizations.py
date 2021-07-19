@@ -1,3 +1,7 @@
+import itertools
+import math
+from datetime import datetime
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -554,80 +558,77 @@ def fig_add_stage_markers(df, column, fig, secondary_y=None, parameters=paramete
     # Beacon Chain genesis Dec-01-2020 12:00:35 PM +UTC
 
     historical_dates = [
-        ("Frontier", datetime.strptime("Jul-30-2015", '%b-%d-%Y')),
-        ("Frontier thawing", datetime.strptime("Sep-07-2015", '%b-%d-%Y')),
-        ("Homestead", datetime.strptime("Mar-14-2016", '%b-%d-%Y')),
-        ("Byzantium", datetime.strptime("Oct-16-2017", '%b-%d-%Y')),
-        ("Constantinople", datetime.strptime("Feb-28-2019", '%b-%d-%Y')),
-        ("Istanbul", datetime.strptime("Dec-08-2019", '%b-%d-%Y')),
-        ("Muir Glacier", datetime.strptime("Jan-02-2020", '%b-%d-%Y')),
+        ("Frontier", datetime.strptime("Jul-30-2015", "%b-%d-%Y"), (-20, 45)),
+        ("Frontier thawing", datetime.strptime("Sep-07-2015", "%b-%d-%Y"), (35, 50)),
+        ("Homestead", datetime.strptime("Mar-14-2016", "%b-%d-%Y"), (-30, 0)),
+        ("Byzantium", datetime.strptime("Oct-16-2017", "%b-%d-%Y"), (30, 40)),
+        ("Constantinople", datetime.strptime("Feb-28-2019", "%b-%d-%Y"), (30, -15)),
+        ("Istanbul", datetime.strptime("Dec-08-2019", "%b-%d-%Y"), (30, -10)),
+        ("Muir Glacier", datetime.strptime("Jan-02-2020", "%b-%d-%Y"), (-35, 0)),
     ]
 
     system_dates = [
-        ("Beacon Chain <br>Genesis", datetime.strptime("Dec-01-2020", '%b-%d-%Y')),
-        ("Today", parameters["date_start"][0]),
+        ("Beacon Chain", datetime.strptime("Dec-01-2020", "%b-%d-%Y")),
+        # ("Today", parameters["date_start"][0]),
         ("EIP1559", parameters["date_eip1559"][0]),
         ("Proof of Stake", parameters["date_pos"][0]),
     ]
 
-    for (name, date) in historical_dates:
-        #         fig.add_trace(
-        #             go.Scatter(
-        #                 mode="markers+text", x=[date], y=[df.loc[date.strftime("%Y-%m-%d")][column][0]],
-        #                 marker_symbol=["diamond"],
-        #                 marker_line_color="darkgrey", marker_color="lightgrey",
-        #                 marker_line_width=2, marker_size=10,
-        #                 hovertemplate=name,
-        #                 name=name,
-        #                 #text=name,
-        #                 textfont_size=14,
-        #                 showlegend=False,
-        #                 textposition="middle right",
-        #             ),
-        #             *(secondary_y, secondary_y) if secondary_y else ()
-        #         )
+    for (name, date, (ay, ax)) in historical_dates:
+        nearest_row = df.iloc[
+            df.index.get_loc(date.strftime("%Y-%m-%d"), method="nearest")
+        ]
+        x_datetime = nearest_row["timestamp"][0]
+        y_value = nearest_row[column][0]
+        fig.add_annotation(
+            x=x_datetime,
+            y=y_value,
+            text=name,
+            ay=ay,
+            ax=ax,
+            showarrow=True,
+            arrowhead=2,
+            arrowsize=1.25,
+        )
 
-        fig.add_annotation(x=date, y=df.loc[date.strftime("%Y-%m-%d")][column][0],
-                           text=name,
-                           showarrow=True,
-                           arrowhead=2,
-                           arrowsize=1.5)
-    
-
-    for (name, date) in system_dates:
+    for idx, (name, date) in enumerate(system_dates):
         fig.add_trace(
             go.Scatter(
                 mode="markers+text",
-                x=[date], y=[df.loc[date.strftime("%Y-%m-%d")][column][0]],
+                x=[date],
+                y=[df.loc[date.strftime("%Y-%m-%d")][column][0]],
                 marker_symbol=["diamond"],
-                # marker_line_color="darkgrey", marker_color="lightgrey",
-                marker_line_width=2, marker_size=10,
+                marker_line_width=2,
+                marker_size=10,
                 hovertemplate=name,
                 name=name,
-                textfont_size=11,
+                # textfont_size=11,
                 text=name,
                 textposition="top center",
-                legendgroup='markers',
+                legendgroup="markers",
                 showlegend=False,
             ),
-            *(secondary_y, secondary_y) if secondary_y else ()
+            *(secondary_y, secondary_y) if secondary_y else (),
         )
         fig.add_trace(
             go.Scatter(
                 mode="markers",
-                x=[date], y=[df.loc[date.strftime("%Y-%m-%d")][column][0]],
+                x=[date],
+                y=[df.loc[date.strftime("%Y-%m-%d")][column][0]],
                 marker_symbol=["diamond"],
-                # marker_line_color="darkgrey", marker_color="lightgrey",
-                marker_line_width=2, marker_size=10,
+                marker_line_color="black",
+                marker_color=cadlabs_colorway_sequence[idx + 1],
+                marker_line_width=2,
+                marker_size=10,
                 hovertemplate=name,
                 name=name,
                 textfont_size=11,
                 textposition="top center",
-                legendgroup='markers',
+                legendgroup="markers",
                 showlegend=True,
             ),
-            *(secondary_y, secondary_y) if secondary_y else ()
-            )
+            *(secondary_y, secondary_y) if secondary_y else (),
+        )
 
     return fig
 
@@ -669,6 +670,9 @@ def plot_eth_supply_over_all_stages(df):
 def plot_eth_supply_and_inflation_over_all_stages(df_historical, df_simulated, parameters=parameters):
     df_historical = df_historical.set_index('timestamp', drop=False)
     df_simulated = df_simulated.set_index('timestamp', drop=False)
+
+    df_historical = df_historical.drop(df_historical.tail(1).index)
+    df_historical.loc[df_simulated.index[0]] = df_simulated.iloc[0]
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -715,7 +719,7 @@ def plot_eth_supply_and_inflation_over_all_stages(df_historical, df_simulated, p
 
     df = df_historical.append(df_simulated)
 
-    fig_add_stage_markers(df, 'supply_inflation_pct', fig, secondary_y=False, parameters=parameters)
+    #fig_add_stage_markers(df, 'supply_inflation_pct', fig, secondary_y=False, parameters=parameters)
     fig_add_stage_vrects(df, fig, parameters=parameters)
 
     # Add range slider
@@ -756,6 +760,9 @@ def plot_eth_supply_and_inflation_over_all_stages(df_historical, df_simulated, p
     # Set secondary y-axes titles
     fig.update_yaxes(title_text="Network Inflation Rate (%/year)", secondary_y=False)
     fig.update_yaxes(title_text="ETH Supply (ETH)", secondary_y=True)
+    fig.update_layout(
+        margin=dict(l=30, r=30, t=40, b=30)
+    )
 
     return fig
 

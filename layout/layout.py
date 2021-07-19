@@ -17,11 +17,11 @@ layout = html.Div([
                 dcc.Dropdown(
                 id='validator-dropdown',
                 clearable=False,
-                value=3,
+                value='Normal Adoption',
                 options=[
-                    {'label': 'Normal Adoption', 'value': 3},
-                    {'label': 'Low Adoption', 'value': 3 * 0.5},
-                    {'label': 'High Adoption', 'value': 3 * 1.5},
+                    {'label': 'Normal Adoption', 'value': 'Normal Adoption'},
+                    {'label': 'Low Adoption', 'value': 'Low Adoption'},
+                    {'label': 'High Adoption', 'value': 'High Adoption'},
                     {'label': 'Custom', 'value': 'Custom'}
                 ] 
                 )
@@ -32,12 +32,12 @@ layout = html.Div([
                 dcc.Slider(
                     id='validator-adoption-slider',
                     min=0,
-                    max=10,
+                    max=7.5,
                     step=0.5,
                     marks={
                         0: '0',
-                        5: '5',
-                        10: '10',
+                        4: '5',
+                        7.5: '7.5',
                     },
                     value=3,
                     tooltip={'placement': 'top'}
@@ -84,7 +84,7 @@ layout = html.Div([
                     id='eip1559-basefee-slider',
                     min=0,
                     max=100,
-                    step=1,
+                    step=10,
                     marks={
                         0: '0',
                         25: '25',
