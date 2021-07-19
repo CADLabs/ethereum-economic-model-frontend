@@ -1,6 +1,12 @@
 body{
-    margin: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-right: 60px;
+    margin-left: 60px;
     background-image: linear-gradient(#ffe5f8, #e9e8fa);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 h1 {
     font-size: 24px;
@@ -19,21 +25,21 @@ h1 {
 }
 .validator-section{
     float: left;
-    width: 450px;
+    width: 440px;
     padding-bottom:20px;
     padding-left:15px;
     padding-right:15px;
 }
 .pos-date-section{
     float: left;
-    width: 450px;
+    width: 440px;
     padding-bottom:20px;
     padding-left:15px;
     padding-right:15px;
 }
 .eip1559-section{
     float: left;
-    width: 450px;
+    width: 440px;
     padding-bottom:20px;
     padding-left:15px;
     padding-right:15px;
@@ -42,5 +48,8 @@ h1 {
     height: 200px;
 }
 .output-row{
-    height: 300px;
+    height: 600px;
+}
+.output-graph{
+    height: 600px;
 }
