@@ -123,11 +123,10 @@ app.clientside_callback(
     """
     function(EIP1559Slider, ValidatorAdoptionSlider, PosLaunchDate, FigurePlot) {
     const LookUp = PosLaunchDate + ':' + EIP1559Slider + ':' + ValidatorAdoptionSlider
-    console.log(LookUp)
-    if (EIP1559Slider === 0){
-        return FigurePlot[0][LookUp]
-    }
-    return FigurePlot[0][LookUp];
+    HistoricalPlotData= FigurePlot[0]["historical"]["data"]
+    
+    FigurePlot[0][LookUp]["data"] = HistoricalPlotData.concat(FigurePlot[0][LookUp]["data"])
+    return FigurePlot[0][LookUp]
     }
     """
  ,
