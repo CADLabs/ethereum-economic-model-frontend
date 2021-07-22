@@ -8,7 +8,7 @@ from layout.exogenous_processes.exogenous_processes import exogenous_processes
 layout = html.Div([
     # Inputs
     html.Div([
-        html.H1('Peak ETH Simulator'),
+        html.H1('ETH Supply Simulator'),
         # Validator Adoption
         html.Div([
             # Validator Adoption Dropdown
@@ -70,9 +70,9 @@ layout = html.Div([
                     clearable=False,
                     value='Enabled: Steady State',
                     options=[
-                        {'label': 'Disabled', 'value': 'Disabled'},
-                        {'label': 'Enabled: Steady State', 'value': 'Enabled: Steady State'},
-                        {'label': 'Enabled: MEV', 'value': 'Enabled: MEV'},
+                        {'label': 'Disabled (Base Fee 0, Priority Fee 0)', 'value': 'Disabled'},
+                        {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'Enabled: Steady State'},
+                        {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'Enabled: MEV'},
                         {'label': 'Custom', 'value': 'Custom'}
                     ]
                 )
@@ -99,10 +99,6 @@ layout = html.Div([
     
     # Output
     html.Div([
-        dcc.Loading(
-            id='loading-1',
-            children=[dcc.Graph(id='graph', className='output-graph')],
-            type='default'
-        )
+        dcc.Graph(id='graph', className='output-graph')
     ], className='output-row')
 ])
