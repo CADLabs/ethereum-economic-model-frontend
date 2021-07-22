@@ -5,13 +5,21 @@ from layout.eth2_specs.eth2_specs import eth2_specs
 from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
 import json
+from datetime import datetime
   
 # Opening JSON file
-f = open('fig_plots.json',)
-  
-# returns JSON object as 
-# a dictionary
-fig_data = json.load(f)
+plots_file = open('./data/plots_data.json',)
+fig_data = json.load(plots_file)
+
+simulation_file = open('./data/simulation_data.json',)
+simulation_data = json.load(simulation_file)
+
+pos_dates_dropdown_poits = simulation_data['info']['parameters']['0']['points']
+eip1559_slider_points = simulation_data['info']['parameters']['1']['points']
+mid_eip1559_slider_point = eip1559_slider_points[len(eip1559_slider_points)//2]
+validator_adoption_slider_points = simulation_data['info']['parameters']['2']['points']
+mid_validator_adoption_slider_point = validator_adoption_slider_points[len(validator_adoption_slider_points)//2]
+
 
 layout = html.Div([
     # Inputs
@@ -39,15 +47,15 @@ layout = html.Div([
                 html.Label("New Validators per Epoch"),
                 dcc.Slider(
                     id='validator-adoption-slider',
-                    min=0.0,
-                    max=7.5,
-                    step=0.5,
+                    min=min(validator_adoption_slider_points),
+                    max=max(validator_adoption_slider_points),
+                    step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
                     marks={
-                        0.0: '0',
-                        4.0: '5',
-                        7.5: '7.5',
+                        min(validator_adoption_slider_points): str(min(validator_adoption_slider_points)),
+                        mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
+                        max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
                     },
-                    value=3.0,
+                    value=mid_validator_adoption_slider_point,
                     tooltip={'placement': 'top'}
                 )
             ])
@@ -59,13 +67,11 @@ layout = html.Div([
             dcc.Dropdown(
                 id='pos-launch-date-dropdown',
                 clearable=False,
-                value='2021-12-1',
+                value=pos_dates_dropdown_poits[0],
                 options=[
-                    {'label': 'Dec 2021', 'value': '2021-12-1'},
-                    {'label': 'Mar 2022', 'value': '2022-3-1'},
-                    {'label': 'Jun 2022', 'value': '2022-6-1'},
-                    {'label': 'Sep 2022', 'value': '2022-9-1'}
+                    {'label': datetime.strptime(date, '%Y-%m-%d').strftime('%B, %Y'), 'value': date} for date in pos_dates_dropdown_poits
                 ]
+
             )
         ], className='pos-date-section'),
         # EIP1559
@@ -90,15 +96,15 @@ layout = html.Div([
                 html.Label("Basefee (Gwei per gas)"),
                 dcc.Slider(
                     id='eip1559-basefee-slider',
-                    min=0,
-                    max=100,
-                    step=10,
+                    min=min(eip1559_slider_points),
+                    max=max(eip1559_slider_points),
+                    step=eip1559_slider_points[1] - eip1559_slider_points[0],
                     marks={
-                        0: '0',
-                        50: '50',
-                        100: '100'
+                        min(eip1559_slider_points): str(min(eip1559_slider_points)),
+                        mid_eip1559_slider_point: str(mid_eip1559_slider_point),
+                        max(eip1559_slider_points): str(max(eip1559_slider_points))
                     },
-                    value=100,
+                    value=max(eip1559_slider_points),
                     tooltip={'placement': 'top'},
                 )
             ])
