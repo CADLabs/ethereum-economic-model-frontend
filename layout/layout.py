@@ -64,7 +64,7 @@ layout = html.Div([
         html.Div([
             # EIP1559 Scenarios Dropdown
             html.Div([
-                html.Label("EIP1559 Scenarios"),
+                html.Label("EIP1559 Scenario"),
                 dcc.Dropdown(
                     id='eip1559-dropdown',
                     clearable=False,
