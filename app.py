@@ -89,7 +89,7 @@ def load_simulation(validator_adoption, pos_launch_date, eip1559_basefee):
 app.clientside_callback(
     """
     function(EIP1559Dropdown) {
-    EIP1559Scenarios = {'Disabled': 0, 'Enabled: Steady State': 90, 'Enabled: MEV':70};
+    EIP1559Scenarios = {'Disabled': 0, 'Enabled: Steady State': 100, 'Enabled: MEV':70};
     if (EIP1559Dropdown === 'Custom'){
         return window.dash_clientside.no_update
     }
@@ -143,7 +143,7 @@ def update_output_graph(validator_adoption,
     eip1559_basefee = int(eip1559_basefee)
     if int(eip1559_basefee) == 0:
         eip1559_dropdown = 'Disabled'
-    elif int(eip1559_basefee) == 90:
+    elif int(eip1559_basefee) == 100:
         eip1559_dropdown = 'Enabled: Steady State'
     elif eip1559_basefee == 70:
         eip1559_dropdown = 'Enabled: MEV'
