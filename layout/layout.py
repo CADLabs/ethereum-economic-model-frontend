@@ -90,7 +90,7 @@ layout = html.Div([
                         50: '50',
                         100: '100'
                     },
-                    value=90,
+                    value=100,
                     tooltip={'placement': 'top'},
                 )
             ])
