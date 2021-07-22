@@ -117,19 +117,44 @@ app.clientside_callback(
 
 
 
+
 # Define callback to update graph
+app.clientside_callback(
+    """
+    function(EIP1559Slider, ValidatorAdoptionSlider, PosLaunchDate, FigurePlot) {
+    const LookUp = PosLaunchDate + ':' + EIP1559Slider + ':' + ValidatorAdoptionSlider
+    console.log(LookUp)
+    if (EIP1559Slider === 0){
+        return FigurePlot[0][LookUp]
+    }
+    return FigurePlot[0][LookUp];
+    }
+    """
+ ,
+    Output('graph', 'figure'),
+    Input("eip1559-basefee-slider", "value"),
+    Input("validator-adoption-slider", "value"),
+    Input("pos-launch-date-dropdown", "value"),
+    State('clientside-figure-store', 'data'),
+
+)
+
+"""
 @app.callback(
     Output('validator-dropdown', 'value'),
     Output('eip1559-dropdown', 'value'),
     Output('graph', 'figure'),
 
     Input("validator-adoption-slider", "value"),
-     Input("pos-launch-date-dropdown", "value"),
-     Input("eip1559-basefee-slider", "value"),
+    Input("pos-launch-date-dropdown", "value"),
+    Input("eip1559-basefee-slider", "value"),
+
+    State('clientside-figure-store', 'data')
 )
 def update_output_graph(validator_adoption,
                         pos_launch_date,
-                        eip1559_basefee):
+                        eip1559_basefee,
+                        clientside_figure_store):
 
     if validator_adoption == 3:
         validator_dropdown = 'Normal Adoption'
@@ -151,10 +176,13 @@ def update_output_graph(validator_adoption,
         eip1559_dropdown = 'Custom'
 
     fig = load_simulation(validator_adoption, pos_launch_date, eip1559_basefee)
+    fig = clientside_figure_store[0]['1']
+
 
     return (validator_dropdown,
             eip1559_dropdown,
             fig)
+"""
 
 if __name__ == '__main__':
     app.run_server(debug=False)

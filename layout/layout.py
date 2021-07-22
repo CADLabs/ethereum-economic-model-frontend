@@ -4,6 +4,14 @@ import dash_bootstrap_components as dbc
 from layout.eth2_specs.eth2_specs import eth2_specs
 from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
+import json
+  
+# Opening JSON file
+f = open('fig_plots.json',)
+  
+# returns JSON object as 
+# a dictionary
+fig_data = json.load(f)
 
 layout = html.Div([
     # Inputs
@@ -31,15 +39,15 @@ layout = html.Div([
                 html.Label("New Validators per Epoch"),
                 dcc.Slider(
                     id='validator-adoption-slider',
-                    min=0,
+                    min=0.0,
                     max=7.5,
                     step=0.5,
                     marks={
-                        0: '0',
-                        4: '5',
+                        0.0: '0',
+                        4.0: '5',
                         7.5: '7.5',
                     },
-                    value=3,
+                    value=3.0,
                     tooltip={'placement': 'top'}
                 )
             ])
@@ -51,12 +59,12 @@ layout = html.Div([
             dcc.Dropdown(
                 id='pos-launch-date-dropdown',
                 clearable=False,
-                value='2021/12/1',
+                value='2021-12-1',
                 options=[
-                    {'label': 'Dec 2021', 'value': '2021/12/1'},
-                    {'label': 'Mar 2022', 'value': '2022/03/1'},
-                    {'label': 'Jun 2022', 'value': '2022/06/1'},
-                    {'label': 'Sep 2022', 'value': '2022/09/1'}
+                    {'label': 'Dec 2021', 'value': '2021-12-1'},
+                    {'label': 'Mar 2022', 'value': '2022-3-1'},
+                    {'label': 'Jun 2022', 'value': '2022-6-1'},
+                    {'label': 'Sep 2022', 'value': '2022-9-1'}
                 ]
             )
         ], className='pos-date-section'),
@@ -99,6 +107,10 @@ layout = html.Div([
     
     # Output
     html.Div([
-        dcc.Graph(id='graph', className='output-graph')
+        dcc.Graph(id='graph', className='output-graph'),
+        dcc.Store(
+        id='clientside-figure-store',
+        data=[fig_data]
+    ),
     ], className='output-row')
 ])
