@@ -7,7 +7,6 @@ from layout.exogenous_processes.exogenous_processes import exogenous_processes
 import json
 from datetime import datetime
   
-# Opening JSON file
 plots_file = open('./data/plots_data.json',)
 fig_data = json.load(plots_file)
 
@@ -51,11 +50,11 @@ layout = html.Div([
                     max=max(validator_adoption_slider_points),
                     step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
                     marks={
-                        min(validator_adoption_slider_points): str(min(validator_adoption_slider_points)),
+                        int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
                         mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
                         max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
                     },
-                    value=mid_validator_adoption_slider_point,
+                    value=3,
                     tooltip={'placement': 'top'}
                 )
             ])
@@ -82,11 +81,11 @@ layout = html.Div([
                 dcc.Dropdown(
                     id='eip1559-dropdown',
                     clearable=False,
-                    value='Enabled: Steady State',
+                    value='EnabledNoMEV',
                     options=[
                         {'label': 'Disabled (Base Fee 0, Priority Fee 0)', 'value': 'Disabled'},
-                        {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'Enabled: Steady State'},
-                        {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'Enabled: MEV'},
+                        {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'EnabledNoMEV'},
+                        {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'EnabledMEV'},
                         {'label': 'Custom', 'value': 'Custom'}
                     ]
                 )
