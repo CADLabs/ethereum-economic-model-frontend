@@ -27,7 +27,7 @@ app = dash.Dash(__name__,
                 server=server,
                 suppress_callback_exceptions=True,
                 external_stylesheets=[dbc.themes.LUX])
-app.title = "Eth2 Calculator"
+app.title = "Eth Supply Simulator"
 app.layout = layout
 
 
