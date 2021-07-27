@@ -1,3 +1,11 @@
+@font-face {
+    font-family: “Lexend-Regular”;
+    src: url(“fonts/Lexend-Regular.ttf”) format(“truetype”);
+    }
+    
+*, html, body {
+    font-family: “Lexend-Regular”, sans-serif;
+    }
 body{
     margin-top: 40px;
     margin-bottom: 40px;
@@ -9,17 +17,26 @@ body{
     background-attachment: scroll;
 }
 h1 {
-    font-size: 40px;
-    margin-top: 60px;
-    margin-bottom: 40px;
+    font-size: 64px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    margin-top: 50px;
+    margin-bottom: 30px;
     text-align: center;
 }
 h2 {
-    font-size: 14px;
-    width: 60%;
+    font-size: 32px;
+    letter-spacing: 1px;
+    width: 90%;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
+}
+p{
+    font-size: 16px;
+}
+a, a:hover{
+    color: #cc3bd1;
 }
 h1, h2, label,p {
     color: #fff;
@@ -62,8 +79,8 @@ footer {
 .simulator-frame{
     padding: 20px;
     margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 40px;
+    margin-bottom: 60px;
     background-color: #272838;
     border: 5px solid transparent;
 
