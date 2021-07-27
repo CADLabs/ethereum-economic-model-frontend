@@ -22,8 +22,8 @@ mid_validator_adoption_slider_point = validator_adoption_slider_points[len(valid
 
 layout = html.Div([
     # Eth Supply Simulator Frame
-    html.H1('Welcome to the ETH Supply Simulator'),
-    html.H2('Ethereum’s monetary policy is changing. This simulator (radCAD front-end) illuminates potential ETH supply trajectories.'),
+    html.H1('Welcome to the ETH Supply Simulator!'),
+    html.H2(['Ethereum’s monetary policy is changing. This simulator illuminates potential ETH supply trajectories. The underlying ', html.A('radCAD model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' is open-source.']),
     html.Div([
         # Inputs
         html.Div([
@@ -123,7 +123,7 @@ layout = html.Div([
         ], className='output-row')
     ], className='simulator-frame'),
     html.Div([
-        html.P('Source: This radCAD front-end is based on version 1.0.0 of the open-source CADLabs Ethereum Economic Model, which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an Ethereum ESP grant. Please refer to the Github repo for context and assumptions of the model. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this feedback form, or drop us a note at radcad@cadlabs.org.')
+        html.P(['This ', html.A('radCAD', href='https://github.com/CADLabs/radCAD', target='_blank'), ' front-end is based on version 1.0.0 of the ', html.A('open-source CADLabs Ethereum Economic Model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ', which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an ', html.A('Ethereum ESP', href='https://esp.ethereum.foundation/en/', target='_blank'),' grant. Please refer to the ', html.A('Github repo', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' for context and assumptions of the model. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this ', html.A('feedback form', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), ', or drop us a note at ', html.A('contact@cadlabs.org', href='mailto:contact@cadlabs.org'), '.'])
     ], className='chart-footer'),
     html.Footer([
         html.P('Powered by:'),

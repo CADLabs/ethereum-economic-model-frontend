@@ -26,7 +26,22 @@ server = flask.Flask(__name__)
 app = dash.Dash(__name__,
                 server=server,
                 suppress_callback_exceptions=True,
-                external_stylesheets=[dbc.themes.LUX])
+                external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
+                meta_tags=[
+                    {
+                        'name': 'viewport',
+                        'content': 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'
+                    },
+                    {
+                        'http-equiv': 'X-UA-Compatible',
+                        'content': 'IE=edge,chrome=1',
+                    },
+                    {
+                        'name': 'HandheldFriendly',
+                        'content': 'true'
+                    }])
+
+
 app.title = "Eth Supply Simulator"
 app.layout = layout
 
