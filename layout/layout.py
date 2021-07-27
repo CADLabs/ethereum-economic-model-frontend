@@ -21,101 +21,114 @@ mid_validator_adoption_slider_point = validator_adoption_slider_points[len(valid
 
 
 layout = html.Div([
-    # Inputs
+    # Eth Supply Simulator Frame
+    html.H1('Welcome to the ETH Supply Simulator'),
+    html.H2('Ethereum’s monetary policy is changing. This simulator (radCAD front-end) illuminates potential ETH supply trajectories.'),
     html.Div([
-        html.H1('ETH Supply Simulator'),
-        # Validator Adoption
+        # Inputs
         html.Div([
-            # Validator Adoption Dropdown
+            # Validator Adoption
             html.Div([
-                html.Label("Validator Adoption Scenario"),
-                dcc.Dropdown(
-                id='validator-dropdown',
-                clearable=False,
-                value='Normal Adoption',
-                options=[
-                    {'label': 'Normal Adoption', 'value': 'Normal Adoption'},
-                    {'label': 'Low Adoption', 'value': 'Low Adoption'},
-                    {'label': 'High Adoption', 'value': 'High Adoption'},
-                    {'label': 'Custom', 'value': 'Custom'}
-                ] 
-                )
-            ]), 
-            # Validator Adoption Slider
-            html.Div([
-                html.Label("New Validators per Epoch"),
-                dcc.Slider(
-                    id='validator-adoption-slider',
-                    min=min(validator_adoption_slider_points),
-                    max=max(validator_adoption_slider_points),
-                    step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
-                    marks={
-                        int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
-                        mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
-                        max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
-                    },
-                    value=3,
-                    tooltip={'placement': 'top'}
-                )
-            ])
-            
-        ], className='validator-section'),
-        # Proof of Stake Activation Date Dropdown
-        html.Div([
-            html.Label("Proof-of-Stake Activation Date (\"The Merge\")"),
-            dcc.Dropdown(
-                id='pos-launch-date-dropdown',
-                clearable=False,
-                value=pos_dates_dropdown_poits[0],
-                options=[
-                    {'label': datetime.strptime(date, '%Y-%m-%d').strftime('%B, %Y'), 'value': date} for date in pos_dates_dropdown_poits
-                ]
-
-            )
-        ], className='pos-date-section'),
-        # EIP1559
-        html.Div([
-            # EIP1559 Scenarios Dropdown
-            html.Div([
-                html.Label("EIP1559 Scenario"),
-                dcc.Dropdown(
-                    id='eip1559-dropdown',
+                # Validator Adoption Dropdown
+                html.Div([
+                    html.Label("Validator Adoption Scenario"),
+                    dcc.Dropdown(
+                    id='validator-dropdown',
                     clearable=False,
-                    value='EnabledNoMEV',
+                    value='Normal Adoption',
                     options=[
-                        {'label': 'Disabled (Base Fee 0, Priority Fee 0)', 'value': 'Disabled'},
-                        {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'EnabledNoMEV'},
-                        {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'EnabledMEV'},
+                        {'label': 'Normal Adoption', 'value': 'Normal Adoption'},
+                        {'label': 'Low Adoption', 'value': 'Low Adoption'},
+                        {'label': 'High Adoption', 'value': 'High Adoption'},
                         {'label': 'Custom', 'value': 'Custom'}
-                    ]
-                )
-            ]),
-            # Basefee slider
+                    ] 
+                    )
+                ]), 
+                # Validator Adoption Slider
+                html.Div([
+                    html.Label("New Validators per Epoch"),
+                    dcc.Slider(
+                        id='validator-adoption-slider',
+                        min=min(validator_adoption_slider_points),
+                        max=max(validator_adoption_slider_points),
+                        step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
+                        marks={
+                            int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
+                            mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
+                            max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
+                        },
+                        value=3,
+                        tooltip={'placement': 'top'}
+                    )
+                ], className='slider-input')
+                
+            ], className='validator-section'),
+            # Proof of Stake Activation Date Dropdown
             html.Div([
-                html.Label("Basefee (Gwei per gas)"),
-                dcc.Slider(
-                    id='eip1559-basefee-slider',
-                    min=min(eip1559_slider_points),
-                    max=max(eip1559_slider_points),
-                    step=eip1559_slider_points[1] - eip1559_slider_points[0],
-                    marks={
-                        min(eip1559_slider_points): str(min(eip1559_slider_points)),
-                        mid_eip1559_slider_point: str(mid_eip1559_slider_point),
-                        max(eip1559_slider_points): str(max(eip1559_slider_points))
-                    },
-                    value=max(eip1559_slider_points),
-                    tooltip={'placement': 'top'},
+                html.Label("Proof-of-Stake Activation Date (\"The Merge\")"),
+                dcc.Dropdown(
+                    id='pos-launch-date-dropdown',
+                    clearable=False,
+                    value=pos_dates_dropdown_poits[0],
+                    options=[
+                        {'label': datetime.strptime(date, '%Y-%m-%d').strftime('%B, %Y'), 'value': date} for date in pos_dates_dropdown_poits
+                    ]
+
                 )
-            ])
-        ], className='eip1559-section')
-    ], className='input-row'),
-    
-    # Output
+            ], className='pos-date-section'),
+            # EIP1559
+            html.Div([
+                # EIP1559 Scenarios Dropdown
+                html.Div([
+                    html.Label("EIP1559 Scenario"),
+                    dcc.Dropdown(
+                        id='eip1559-dropdown',
+                        clearable=False,
+                        value='EnabledNoMEV',
+                        options=[
+                            {'label': 'Disabled (Base Fee 0, Priority Fee 0)', 'value': 'Disabled'},
+                            {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'EnabledNoMEV'},
+                            {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'EnabledMEV'},
+                            {'label': 'Custom', 'value': 'Custom'}
+                        ]
+                    )
+                ]),
+                # Basefee slider
+                html.Div([
+                    html.Label("Basefee (Gwei per gas)"),
+                    dcc.Slider(
+                        id='eip1559-basefee-slider',
+                        min=min(eip1559_slider_points),
+                        max=max(eip1559_slider_points),
+                        step=eip1559_slider_points[1] - eip1559_slider_points[0],
+                        marks={
+                            min(eip1559_slider_points): str(min(eip1559_slider_points)),
+                            mid_eip1559_slider_point: str(mid_eip1559_slider_point),
+                            max(eip1559_slider_points): str(max(eip1559_slider_points))
+                        },
+                        value=max(eip1559_slider_points),
+                        tooltip={'placement': 'top'},
+                    )
+                ], className='slider-input')
+            ], className='eip1559-section')
+        ], className='input-row'),
+        
+        # Output
+        html.Div([
+            dcc.Graph(id='graph', className='output-graph'),
+            dcc.Store(
+            id='clientside-figure-store',
+            data=[fig_data]
+        ),
+        ], className='output-row')
+    ], className='simulator-frame'),
     html.Div([
-        dcc.Graph(id='graph', className='output-graph'),
-        dcc.Store(
-        id='clientside-figure-store',
-        data=[fig_data]
-    ),
-    ], className='output-row')
+        html.P('Source: This radCAD front-end is based on version 1.0.0 of the open-source CADLabs Ethereum Economic Model, which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an Ethereum ESP grant. Please refer to the Github repo for context and assumptions of the model. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this feedback form, or drop us a note at radcad@cadlabs.org.')
+    ], className='chart-footer'),
+    html.Footer([
+        html.P('Powered by:'),
+        html.Img(src='assets/radcad-logo.svg', height='60px'),
+        html.P('Created by:'),
+        html.Img(src='assets/cadlabs-logo.svg', height='60px'),
+    ])
 ])
