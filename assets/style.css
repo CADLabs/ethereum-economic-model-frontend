@@ -3,17 +3,34 @@ body{
     margin-bottom: 40px;
     margin-right: 60px;
     margin-left: 60px;
-    background-image: linear-gradient(#ffe5f8, #e9e8fa);
-    height: 100%;
+    background-image: url(shapes-background.png);
+    background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
 }
 h1 {
-    font-size: 24px;
-    margin-top: 0px;
-    margin-bottom: 20px;
+    font-size: 40px;
+    margin-top: 60px;
+    margin-bottom: 40px;
     text-align: center;
 }
+h2 {
+    font-size: 14px;
+    width: 60%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    text-align: center;
+}
+h1, h2, label,p {
+    color: #fff;
+}
+footer {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 60px;
+  }
 .rc-slider-dot-active {  
   border: solid 2px #d0d0f9;
 }
@@ -23,33 +40,36 @@ h1 {
 .rc-slider-handle {  
   border: solid 2px #d0d0f9;
 }
-.validator-section{
-    float: left;
-    width: 440px;
-    padding-bottom:20px;
-    padding-left:15px;
-    padding-right:15px;
-}
-.pos-date-section{
-    float: left;
-    width: 440px;
-    padding-bottom:20px;
-    padding-left:15px;
-    padding-right:15px;
-}
-.eip1559-section{
-    float: left;
-    width: 440px;
-    padding-bottom:20px;
-    padding-left:15px;
-    padding-right:15px;
+
+.slider-input{
+    margin-top:20px;
 }
 .input-row{
-    height: 200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
 }
 .output-row{
     height: 600px;
 }
 .output-graph{
     height: 600px;
+}
+.simulator-frame, .chart-footer{
+    width: 90%;
+    margin: 0 auto;
+}
+.simulator-frame{
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #272838;
+    border: 5px solid transparent;
+
+        -moz-border-image: -moz-linear-gradient(left, #f36546 0%, #cc3bd1 100%);
+        -webkit-border-image: -webkit-linear-gradient(left, #f36546 0%, #cc3bd1 100%);
+        border-image: linear-gradient(to right, #f36546 0%, #cc3bd1 100%);
+
+        border-image-slice: 1;
 }
