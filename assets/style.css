@@ -21,7 +21,7 @@ h1 {
     font-weight: 500;
     letter-spacing: 2px;
     margin-top: 50px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
 }
 h2 {
@@ -63,7 +63,8 @@ footer {
 }
 .input-row{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 370px));
+    justify-content: center;
     grid-gap: 10px;
 }
 .output-row{
