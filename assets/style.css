@@ -15,6 +15,10 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll;
+    overflow-x: hidden;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 h1 {
     font-size: 64px;
@@ -43,11 +47,17 @@ h1, h2, label,p {
 }
 footer {
     display: flex;
-    justify-content: space-between;
-    width: 40%;
+    justify-content: center;
     margin: 0 auto;
     margin-top: 60px;
   }
+footer p {
+    font-size: 32px;
+    padding-right:  20px;
+}
+footer img {
+    padding-right:  40px;
+}
 .rc-slider-dot-active {  
   border: solid 2px #d0d0f9;
 }
@@ -57,7 +67,6 @@ footer {
 .rc-slider-handle {  
   border: solid 2px #d0d0f9;
 }
-
 .slider-input{
     margin-top:20px;
 }
@@ -90,4 +99,35 @@ footer {
         border-image: linear-gradient(to right, #f36546 0%, #cc3bd1 100%);
 
         border-image-slice: 1;
+}
+@media screen and (max-width: 768px) {
+    body {
+        margin-top: 30px;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+	h1 {
+        font-size: 24px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;	
+        width: 100%;	
+	}
+    h2 {
+		font-size: 18px;		
+	}
+
+    footer {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 370px));
+        align-content: center;
+        grid-gap: 10px;
+      }
+    footer p {
+        font-size: 18px;
+        padding-right:  20px;
+    }
+    footer img {
+        padding-right:  40px;
+    }
 }
