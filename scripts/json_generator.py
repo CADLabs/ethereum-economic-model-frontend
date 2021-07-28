@@ -11,6 +11,7 @@ import json
 
 # Append the root directory to Python path,
 sys.path.append("../..")
+sys.path.append("../../..")
 
 from experiments.run import run
 from model.types import Stage
@@ -20,10 +21,10 @@ from data.historical_values import df_ether_supply
 logger = logging.getLogger()
 
 # Import experiment templates
-import experiments.templates.time_domain_analysis as time_domain_analysis
+import experiments.templates.json_generator_setup as json_generator_setup
 
 # Fetch the time-domain analysis experiment
-experiment = time_domain_analysis.experiment
+experiment = json_generator_setup.experiment
 # Create a copy of the experiment simulation
 simulation = copy.deepcopy(experiment.simulations[0])
 
