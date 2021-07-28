@@ -47,8 +47,12 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             else {
                 EIP1559Dropdown = 'Custom'
             }
+            FigurePlotDesktop = Object.assign({}, FigurePlot[0][LookUp]);
+            FigurePlotMobile = FigurePlot[0][LookUp]
+            FigurePlotMobile["layout"]["annotations"] = []
+            FigurePlotMobile["data"] = FigurePlotMobile["data"].filter((obj) => obj.legendgroup !== "markers")
             
-            return [FigurePlot[0][LookUp], ValidatorDropdown, EIP1559Dropdown]
+            return [FigurePlotDesktop, FigurePlotMobile, ValidatorDropdown, EIP1559Dropdown]
         }
     }
 });

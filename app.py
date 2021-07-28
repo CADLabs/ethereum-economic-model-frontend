@@ -115,6 +115,7 @@ app.clientside_callback(
         function_name='update_eth_supply_chart_function'
     ),
     Output('graph', 'figure'),
+    Output('graph-mobile', 'figure'),
     Output('validator-dropdown', 'value'),
     Output('eip1559-dropdown', 'value'),
     Input("eip1559-basefee-slider", "value"),

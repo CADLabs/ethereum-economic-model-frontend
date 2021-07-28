@@ -115,6 +115,7 @@ layout = html.Div([
         
         # Output
         html.Div([
+            dcc.Graph(id='graph-mobile', className='output-graph-mobile'),
             dcc.Graph(id='graph', className='output-graph'),
             dcc.Store(
             id='clientside-figure-store',
