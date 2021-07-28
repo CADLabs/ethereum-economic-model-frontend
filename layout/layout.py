@@ -127,8 +127,17 @@ layout = html.Div([
     ], className='chart-footer'),
     html.Footer([
         html.P('Powered by:'),
-        html.Img(src='assets/radcad-logo.svg', height='60px'),
+        html.A(
+            html.Img(src='assets/radcad-logo.svg', height='60px'),
+            href='https://github.com/CADLabs/radCAD',
+            target='_blank'
+        ),
         html.P('Created by:'),
-        html.Img(src='assets/cadlabs-logo.svg', height='60px'),
+        html.A(
+            html.Img(src='assets/cadlabs-logo.svg', height='60px'),
+            href='https://twitter.com/CADLabs_org',
+            target='_blank'
+        )
+        
     ])
 ])
