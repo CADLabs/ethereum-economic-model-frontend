@@ -27,6 +27,9 @@ historical_data = data['data']['historical']
 # Configure scenarios
 eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 25)': 25}
 validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 3 * 0.5, 'High Adoption': 3 * 1.5}
+pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1, 'Delayed 6 months (Jun 2022)': 2}
+
+pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
 
 # define flask app.server
 server = flask.Flask(__name__)
@@ -107,7 +110,14 @@ app.clientside_callback(
     Output('eip1559-basefee-slider', 'value'),
     Input('eip1559-dropdown', 'value')
 )
-
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_pos_date_slider_function'
+    ),
+    Output('pos-launch-date-slider', 'value'),
+    Input('pos-launch-date-dropdown', 'value')
+)
 app.clientside_callback(
     ClientsideFunction(
         namespace='clientside',
@@ -137,14 +147,16 @@ app.clientside_callback(
 # Define callback to update graph
 @app.callback(
     Output('validator-dropdown', 'value'),
+    Output('pos-launch-date-dropdown', 'value'),
     Output('eip1559-dropdown', 'value'),
     Output('graph', 'figure'),
     Output('graph-mobile', 'figure'),
     [Input('validator-adoption-slider', 'value'),
-     Input('pos-launch-date-dropdown', 'value'),
+     Input('pos-launch-date-slider', 'value'),
      Input('eip1559-basefee-slider', 'value')]
 )
-def update_output_graph(validator_adoption, pos_launch_date, eip1559_base_fee):
+def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fee): 
+    pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
     LookUp = str(pos_launch_date) + ':' + str(eip1559_base_fee) + ':' + str(validator_adoption)
     HistoricalPlotData = fig_data["historical"]["data"]
     if (len(fig_data[LookUp]["data"]) < 6):
@@ -153,6 +165,9 @@ def update_output_graph(validator_adoption, pos_launch_date, eip1559_base_fee):
 
     _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
     validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
+
+    _pos_activation_scenarios = dict((v, k) for k, v in pos_dates_dropdown_scenarios.items())
+    pos_activation_dropdown = _pos_activation_scenarios.get(pos_launch_date_idx, 'Custom Value')
 
     _eip1559_scenarios = dict((v, k) for k, v in eip1559_scenarios.items())
     eip1559_dropdown = _eip1559_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
@@ -164,6 +179,7 @@ def update_output_graph(validator_adoption, pos_launch_date, eip1559_base_fee):
     
     return (
         validator_dropdown,
+        pos_activation_dropdown,
         eip1559_dropdown,
         desktop_figure,
         mobile_figure
