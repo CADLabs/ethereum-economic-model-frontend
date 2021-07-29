@@ -68,12 +68,18 @@ footer img {
 .rc-slider-handle {  
   border: solid 2px #d0d0f9;
 }
+.rc-slider-mark-text:last-child{
+    transform: translateX(50%) !important ;
+    right: 0% !important;
+    left: auto !important;
+    }
 .slider-input{
     margin-top:20px;
+    padding-right: 20px;
 }
 .input-row{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 370px));
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
     justify-content: center;
     grid-gap: 10px;
 }
@@ -88,15 +94,14 @@ footer img {
     height: 600px;
     display: none;
 }
-.simulator-frame, .chart-footer{
-    width: 90%;
+.output-container{
+    width: 95%;
     margin: 0 auto;
 }
 .simulator-frame{
     padding: 20px;
-    margin: 0 auto;
     margin-top: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     background-color: #272838;
     border: 5px solid transparent;
 
@@ -123,7 +128,6 @@ footer img {
 		font-size: 18px;		
 	}
     .simulator-frame{
-        width: 90%;
         padding: 15px;
     }
     .output-graph{
@@ -150,5 +154,11 @@ footer img {
         width: 100%;
         justify-content: center;
         margin: 0 auto
+    }
+    .input-row{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        grid-gap: 10px;
     }
 }
