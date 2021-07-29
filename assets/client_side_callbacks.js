@@ -1,15 +1,16 @@
 window.dash_clientside = Object.assign({}, window.dash_clientside, {
     clientside: {
         update_eip1559_slider_function: function(EIP1559Dropdown) {
-            EIP1559Scenarios = {'Disabled': 0, 'EnabledNoMEV': 100, 'EnabledMEV':70};
-            if (EIP1559Dropdown === 'Custom'){
+            EIP1559Scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 25)': 25, }
+            if (EIP1559Dropdown === 'Enabled (Custom Value)'){
                 return window.dash_clientside.no_update
             }
+            console.log(EIP1559Dropdown)
             return EIP1559Scenarios[EIP1559Dropdown];
         },
         update_validator_adoption_slider_function: function(ValidatorDropdown) {
             ValidatorScenarios = {'Normal Adoption': 3, 'Low Adoption': 1.5, 'High Adoption':4.5};
-            if (ValidatorDropdown === 'Custom'){
+            if (ValidatorDropdown === 'Custom Value'){
                 return window.dash_clientside.no_update
             }
             return ValidatorScenarios[ValidatorDropdown];
@@ -32,26 +33,24 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
                 ValidatorDropdown = 'High Adoption'
             }
             else{
-                ValidatorDropdown = 'Custom'
+                ValidatorDropdown = 'Custom Value'
             }
         
             if (EIP1559Slider == 0){
-                EIP1559Dropdown = 'Disabled'
+                EIP1559Dropdown = 'Disabled (Base Fee = 0)'
             }
-            else if (EIP1559Slider == 70){
-                EIP1559Dropdown = 'EnabledMEV'
-            }
-            else if (EIP1559Slider == 100){
-                EIP1559Dropdown = 'EnabledNoMEV'
+            else if (EIP1559Slider == 25){
+                EIP1559Dropdown = 'Enabled (Base Fee = 25)'
             }
             else {
-                EIP1559Dropdown = 'Custom'
+                EIP1559Dropdown = 'Enabled (Custom Value)'
             }
-            FigurePlotDesktop = Object.assign({}, FigurePlot[0][LookUp]);
-            FigurePlotMobile = FigurePlot[0][LookUp]
-            FigurePlotMobile["layout"]["annotations"] = []
-            FigurePlotMobile["data"] = FigurePlotMobile["data"].filter((obj) => obj.legendgroup !== "markers")
             
+            FigurePlotMobile = Object.assign({}, FigurePlot[0][LookUp]);
+            FigurePlotMobile["layout"]["annotations"].length = 0
+            FigurePlotMobile["data"] = FigurePlotMobile["data"].filter((obj) => obj.legendgroup !== "markers")
+
+            FigurePlotDesktop = Object.assign({}, FigurePlot[0][LookUp]);
             return [FigurePlotDesktop, FigurePlotMobile, ValidatorDropdown, EIP1559Dropdown]
         }
     }

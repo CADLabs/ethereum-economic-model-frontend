@@ -81,7 +81,7 @@ footer img {
 }
 .output-graph{
     height: 600px;
-    display: inline;
+    display: block;
 }
 .output-graph-mobile{
     display: none;
@@ -128,7 +128,7 @@ footer img {
         display: none;
     }
     .output-graph-mobile{
-        display: inline;
+        display: block;
     }
     footer {
         display: grid;

@@ -17,8 +17,15 @@ from layout.layout import layout
 with open('data/simulation_data.json') as json_file:
     data = json.load(json_file)
 
+plots_file = open('./data/plots_data.json',)
+fig_data = json.load(plots_file)
+
 simulation_data = data['data']['simulations']
 historical_data = data['data']['historical']
+
+# Configure scenarios
+eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 25)': 25}
+validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 3 * 0.5, 'High Adoption': 3 * 1.5}
 
 # define flask app.server
 server = flask.Flask(__name__)
@@ -42,7 +49,7 @@ app = dash.Dash(__name__,
                     }])
 
 
-app.title = "Eth Supply Simulator"
+app.title = "ETH Supply Simulator"
 app.layout = layout
 
 
@@ -109,6 +116,7 @@ app.clientside_callback(
     Input('validator-dropdown', 'value')
 )
 
+"""
 app.clientside_callback(
     ClientsideFunction(
         namespace='clientside',
@@ -122,8 +130,39 @@ app.clientside_callback(
     Input("validator-adoption-slider", "value"),
     Input("pos-launch-date-dropdown", "value"),
     State('clientside-figure-store', 'data'),
-
 )
+"""
+
+# Define callback to update graph
+@app.callback(
+    Output('validator-dropdown', 'value'),
+    Output('eip1559-dropdown', 'value'),
+    Output('graph', 'figure'),
+    Output('graph-mobile', 'figure'),
+    [Input('validator-adoption-slider', 'value'),
+     Input('pos-launch-date-dropdown', 'value'),
+     Input('eip1559-basefee-slider', 'value')]
+)
+def update_output_graph(validator_adoption, pos_launch_date, eip1559_base_fee):
+    LookUp = str(pos_launch_date) + ':' + str(eip1559_base_fee) + ':' + str(validator_adoption)
+    HistoricalPlotData = fig_data["historical"]["data"]
+    if (len(fig_data[LookUp]["data"]) < 6):
+        fig_data[LookUp]["data"] = HistoricalPlotData + fig_data[LookUp]["data"]
+
+
+    _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
+    validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
+
+    _eip1559_scenarios = dict((v, k) for k, v in eip1559_scenarios.items())
+    eip1559_dropdown = _eip1559_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
+
+    return (
+        validator_dropdown,
+        eip1559_dropdown,
+        fig_data[LookUp],
+        fig_data[LookUp]
+    )
+
 
 
 if __name__ == '__main__':
