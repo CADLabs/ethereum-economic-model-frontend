@@ -49,10 +49,11 @@ footer {
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    margin-top: 60px;
+    margin-top: 140px;
   }
 footer p {
     font-size: 28px;
+    font-family: “Lexend-Regular”, sans-serif;
     padding-right:  20px;
 }
 footer img {
@@ -84,6 +85,7 @@ footer img {
     display: block;
 }
 .output-graph-mobile{
+    height: 600px;
     display: none;
 }
 .simulator-frame, .chart-footer{
@@ -94,7 +96,7 @@ footer img {
     padding: 20px;
     margin: 0 auto;
     margin-top: 40px;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     background-color: #272838;
     border: 5px solid transparent;
 
@@ -133,18 +135,20 @@ footer img {
     footer {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(20px, 450px));
-        justify-content: left;
+        justify-content: center;
         grid-gap: 5px;
         margin: 0 auto;
+        margin-top: 140px;
       }
     footer p {
-        font-size: 24px;
-        padding-right:  10px;
-        margin: 0 auto
+        font-size: 18px;
+        padding-right: 0px;
+        margin: 0 auto;
     }
+    
     footer img {
-        padding-right:  10px;
-        display: block;
+        width: 100%;
+        justify-content: center;
         margin: 0 auto
     }
 }

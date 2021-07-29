@@ -7,6 +7,7 @@ import flask
 
 # Additional dependencies
 import json
+import copy
 import pandas as pd
 from datetime import datetime
 
@@ -156,13 +157,17 @@ def update_output_graph(validator_adoption, pos_launch_date, eip1559_base_fee):
     _eip1559_scenarios = dict((v, k) for k, v in eip1559_scenarios.items())
     eip1559_dropdown = _eip1559_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
 
+    
+    mobile_figure = copy.deepcopy(fig_data[LookUp])
+    mobile_figure["layout"]["annotations"].clear() 
+    desktop_figure = fig_data[LookUp]
+    
     return (
         validator_dropdown,
         eip1559_dropdown,
-        fig_data[LookUp],
-        fig_data[LookUp]
+        desktop_figure,
+        mobile_figure
     )
-
 
 
 if __name__ == '__main__':

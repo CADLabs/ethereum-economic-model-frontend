@@ -127,7 +127,7 @@ layout = html.Div([
         ),
         html.P('Created by:'),
         html.A(
-            html.Img(src='assets/cadlabs-logo.svg', height='60px'),
+            html.Img(src='assets/cadlabs-logo.svg', height='50px'),
             href='https://twitter.com/CADLabs_org',
             target='_blank'
         )
