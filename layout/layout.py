@@ -6,9 +6,6 @@ from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
 import json
 from datetime import datetime
-  
-plots_file = open('./data/plots_data.json',)
-fig_data = json.load(plots_file)
 
 simulation_file = open('./data/simulation_data.json',)
 simulation_data = json.load(simulation_file)
@@ -40,7 +37,7 @@ layout = html.Div([
                         {'label': 'Normal Adoption', 'value': 'Normal Adoption'},
                         {'label': 'Low Adoption', 'value': 'Low Adoption'},
                         {'label': 'High Adoption', 'value': 'High Adoption'},
-                        {'label': 'Custom', 'value': 'Custom'}
+                        {'label': 'Custom Value', 'value': 'Custom Value'}
                     ] 
                     )
                 ]), 
@@ -84,12 +81,11 @@ layout = html.Div([
                     dcc.Dropdown(
                         id='eip1559-dropdown',
                         clearable=False,
-                        value='EnabledNoMEV',
+                        value='Enabled (Base Fee = 25)',
                         options=[
-                            {'label': 'Disabled (Base Fee 0, Priority Fee 0)', 'value': 'Disabled'},
-                            {'label': 'Enabled / No MEV (Base Fee 100, Priority Fee 1)', 'value': 'EnabledNoMEV'},
-                            {'label': 'Enabled / MEV (Base Fee 70, Priority Fee 30)', 'value': 'EnabledMEV'},
-                            {'label': 'Custom', 'value': 'Custom'}
+                            {'label': 'Disabled (Base Fee = 0)', 'value': 'Disabled (Base Fee = 0)'},
+                            {'label': 'Enabled (Base Fee = 25)', 'value': 'Enabled (Base Fee = 25)'},
+                            {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
                         ]
                     )
                 ]),
@@ -106,7 +102,7 @@ layout = html.Div([
                             mid_eip1559_slider_point: str(mid_eip1559_slider_point),
                             max(eip1559_slider_points): str(max(eip1559_slider_points))
                         },
-                        value=max(eip1559_slider_points),
+                        value=25,
                         tooltip={'placement': 'top'},
                     )
                 ], className='slider-input')
@@ -116,11 +112,7 @@ layout = html.Div([
         # Output
         html.Div([
             dcc.Graph(id='graph-mobile', className='output-graph-mobile'),
-            dcc.Graph(id='graph', className='output-graph'),
-            dcc.Store(
-            id='clientside-figure-store',
-            data=[fig_data]
-        ),
+            dcc.Graph(id='graph', className='output-graph')
         ], className='output-row')
     ], className='simulator-frame'),
     html.Div([
