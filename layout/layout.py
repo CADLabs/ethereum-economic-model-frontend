@@ -132,6 +132,148 @@ layout = html.Div([
             html.Div([
                 dcc.Graph(id='graph-mobile', className='output-graph-mobile'),
                 dcc.Graph(id='graph', className='output-graph')
+            ], className='output-row'),
+
+            html.Div([
+                # Validator Adoption
+                html.Div([
+                    # Validator Adoption Dropdown
+                    html.Div([
+                        html.Label("Validator Adoption Scenario"),
+                        dcc.Dropdown(
+                        id='validator-dropdown-2',
+                        clearable=False,
+                        value='Normal Adoption',
+                        options=[
+                            {'label': 'Normal Adoption (Historical Average)', 'value': 'Normal Adoption'},
+                            {'label': 'Low Adoption (50% Slower)', 'value': 'Low Adoption'},
+                            {'label': 'High Adoption (50% Faster)', 'value': 'High Adoption'},
+                            {'label': 'Custom Value', 'value': 'Custom Value'}
+                        ] 
+                        )
+                    ]), 
+                    # Validator Adoption Slider
+                    html.Div([
+                        html.Label("New Validators per Epoch"),
+                        dcc.Slider(
+                            id='validator-adoption-slider-2',
+                            min=min(validator_adoption_slider_points),
+                            max=max(validator_adoption_slider_points),
+                            step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
+                            marks={
+                                int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
+                                mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
+                                max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
+                            },
+                            value=3,
+                            tooltip={'placement': 'top'}
+                        )
+                    ], className='slider-input')
+                    
+                ], className='validator-section'),
+                # Proof of Stake Activation Date Dropdown
+                html.Div([
+                    html.Div([
+                    html.Label("Proof-of-Stake Activation Scenario"),
+                    dcc.Dropdown(
+                        id='pos-launch-date-dropdown-2',
+                        clearable=False,
+                        value='As planned (Dec 2021)',
+                        options=[
+                            {'label': 'As planned (Dec 2021)', 'value': 'As planned (Dec 2021)'},
+                            {'label': 'Delayed 3 months (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
+                            {'label': 'Delayed 6 months (Jun 2022)', 'value': 'Delayed 6 months (Jun 2022)'},
+                            {'label': 'Custom Value', 'value': 'Custom Value'}   
+                        ])
+                    ]),
+                    html.Div([
+                        html.Label("Activation Date"),
+                        dcc.Slider(
+                            id='pos-launch-date-slider-2',
+                            min=0,
+                            max=len(pos_dates_dropdown_poits)-1,
+                            step=1,
+                            marks={
+                            idx: datetime.strptime(date, '%Y-%m-%d').strftime('%y-%m') for idx, date in enumerate(pos_dates_dropdown_poits)
+                            },
+                            value=0,
+                        )
+                    ], className='slider-input')
+
+                ], className='pos-date-section'),
+                
+                # EIP1559
+                html.Div([
+                    # EIP1559 Scenarios Dropdown
+                    html.Div([
+                        html.Label("EIP-1559 Scenario"),
+                        dcc.Dropdown(
+                            id='eip1559-dropdown-2',
+                            clearable=False,
+                            value='Enabled (Priority Fee = 2)',
+                            options=[
+                                {'label': 'Disabled (Priority Fee = 0)', 'value': 'Disabled (Priority Fee = 0)'},
+                                {'label': 'Enabled (Priority Fee = 2)', 'value': 'Enabled (Priority Fee = 2)'},
+                                {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
+                            ]
+                        )
+                    ]),
+                    # Basefee slider
+                    html.Div([
+                        html.Label("Priority Fee (Gwei per gas)"),
+                        dcc.Slider(
+                            id='eip1559-basefee-slider-2',
+                            min=0,
+                            max=20,
+                            step=2,
+                            marks={
+                                0: str(0),
+                                10: str(10),
+                                20: str(20)
+                            },
+                            value=2,
+                            tooltip={'placement': 'top'},
+                        )
+                    ], className='slider-input')
+                ], className='eip1559-section'),
+                # MEV
+                html.Div([
+                    # MEV Scenarios Dropdown
+                    html.Div([
+                        html.Label("MEV Scenario"),
+                        dcc.Dropdown(
+                            id='mev-dropdown-2',
+                            clearable=False,
+                            value='Enabled (MEV = 0.0115)',
+                            options=[
+                                {'label': 'Disabled (MEV = 0)', 'value': 'Disabled (MEV = 0)'},
+                                {'label': 'Enabled (MEV = 0.0115)', 'value': 'Enabled (MEV = 0.0115)'},
+                                {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
+                            ]
+                        )
+                    ]),
+                    # Basefee slider
+                    html.Div([
+                        html.Label("MEV (ETH per block)"),
+                        dcc.Slider(
+                            id='mev-basefee-slider-2',
+                            min=0,
+                            max=0.5,
+                            step=0.05,
+                            marks={
+                                0: str(0),
+                                0.25: str(0.25),
+                                0.5: str(0.5)
+                            },
+                            value=2,
+                            tooltip={'placement': 'top'},
+                        )
+                    ], className='slider-input')
+                ], className='eip1559-section')
+            ], className='input-row-2'),
+            # Output
+            html.Div([
+                dcc.Graph(id='graph-yields', className='output-graph')
             ], className='output-row')
         ], className='simulator-frame'),
         html.Div([
