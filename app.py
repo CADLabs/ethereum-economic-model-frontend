@@ -21,6 +21,8 @@ with open('data/simulation_data.json') as json_file:
 plots_file = open('./data/plots_data.json',)
 fig_data = json.load(plots_file)
 
+fig_cumulative_yields = json.load(open('./data/fig_cumulative_revenue_yields.json',))
+
 simulation_data = data['data']['simulations']
 historical_data = data['data']['historical']
 
@@ -151,6 +153,7 @@ app.clientside_callback(
     Output('eip1559-dropdown', 'value'),
     Output('graph', 'figure'),
     Output('graph-mobile', 'figure'),
+    Output('graph-yields', 'figure'),
     [Input('validator-adoption-slider', 'value'),
      Input('pos-launch-date-slider', 'value'),
      Input('eip1559-basefee-slider', 'value')]
@@ -182,7 +185,8 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
         pos_activation_dropdown,
         eip1559_dropdown,
         desktop_figure,
-        mobile_figure
+        mobile_figure,
+        fig_cumulative_yields
     )
 
 
