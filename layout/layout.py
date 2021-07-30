@@ -273,8 +273,8 @@ layout = html.Div([
             ], className='input-row-2'),
             # Output
             html.Div([
-                dcc.Graph(id='graph-yields', className='output-graph')
-            ], className='output-row')
+                dcc.Graph(id='graph-yields', className='output-graph-2')
+            ], className='output-row-2')
         ], className='simulator-frame'),
         html.Div([
             html.P(['This ', html.A('radCAD', href='https://github.com/CADLabs/radCAD', target='_blank'), ' front-end is based on version 1.0.0 of the ', html.A('open-source CADLabs Ethereum Economic Model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ', which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an ', html.A('Ethereum ESP', href='https://esp.ethereum.foundation/en/', target='_blank'),' grant. Please refer to the ', html.A('Github repo', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' for context and assumptions of the model. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this ', html.A('feedback form', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), ', or drop us a note at ', html.A('contact@cadlabs.org', href='mailto:contact@cadlabs.org'), '.'])
