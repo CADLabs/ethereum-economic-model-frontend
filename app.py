@@ -43,7 +43,6 @@ Talisman(server, content_security_policy=csp)
 app = dash.Dash(__name__,
                 server=server,
                 suppress_callback_exceptions=True,
-                external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
                 meta_tags=[
                     {
                         'name': 'viewport',
