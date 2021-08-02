@@ -55,7 +55,7 @@ app = dash.Dash(__name__,
                     }])
 
 
-app.title = "ETH Supply Simulator"
+app.title = "Ethereum Economic Model"
 app.layout = layout
 
 
