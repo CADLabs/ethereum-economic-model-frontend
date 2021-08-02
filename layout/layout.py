@@ -260,16 +260,16 @@ layout = html.Div([
                     html.Div([
                         html.Label("MEV (ETH per block)"),
                         dcc.Slider(
-                            id='mev-basefee-slider-2',
+                            id='mev-slider-2',
                             min=0,
                             max=0.5,
-                            step=0.05,
+                            step=0.0115,
                             marks={
                                 0: str(0),
                                 0.25: str(0.25),
                                 0.5: str(0.5)
                             },
-                            value=2,
+                            value=0.0115,
                             tooltip={'placement': 'top'},
                         )
                     ], className='slider-input')

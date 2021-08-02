@@ -128,7 +128,38 @@ app.clientside_callback(
     Output('validator-adoption-slider', 'value'),
     Input('validator-dropdown', 'value')
 )
-
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_eip1559_priority_fee_slider_function'
+    ),
+    Output('eip1559-basefee-slider-2', 'value'),
+    Input('eip1559-dropdown-2', 'value')
+)
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_validator_adoption_slider_function'
+    ),
+    Output('validator-adoption-slider-2', 'value'),
+    Input('validator-dropdown-2', 'value')
+)
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_pos_date_slider_function'
+    ),
+    Output('pos-launch-date-slider-2', 'value'),
+    Input('pos-launch-date-dropdown-2', 'value')
+)
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_mev_slider_function'
+    ),
+    Output('mev-slider-2', 'value'),
+    Input('mev-dropdown-2', 'value')
+)
 """
 app.clientside_callback(
     ClientsideFunction(

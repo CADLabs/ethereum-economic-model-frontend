@@ -5,7 +5,13 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             if (EIP1559Dropdown === 'Enabled (Custom Value)'){
                 return window.dash_clientside.no_update
             }
-            console.log(EIP1559Dropdown)
+            return EIP1559Scenarios[EIP1559Dropdown];
+        },
+        update_eip1559_priority_fee_slider_function: function(EIP1559Dropdown) {
+            EIP1559Scenarios = {'Disabled (Priority Fee = 0)': 0, 'Enabled (Priority Fee = 2)': 2}
+            if (EIP1559Dropdown === 'Enabled (Custom Value)'){
+                return window.dash_clientside.no_update
+            }
             return EIP1559Scenarios[EIP1559Dropdown];
         },
         update_pos_date_slider_function: function(PosActivationDropdown) {
@@ -21,6 +27,13 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
                 return window.dash_clientside.no_update
             }
             return ValidatorScenarios[ValidatorDropdown];
+        },
+        update_mev_slider_function: function(EIP1559Dropdown) {
+            EIP1559Scenarios = {'Disabled (MEV = 0)': 0, 'Enabled (MEV = 0.0115)': 0.0115}
+            if (EIP1559Dropdown === 'Enabled (Custom Value)'){
+                return window.dash_clientside.no_update
+            }
+            return EIP1559Scenarios[EIP1559Dropdown];
         },
         update_eth_supply_chart_function: function(EIP1559Slider, ValidatorAdoptionSlider, PosLaunchDate, FigurePlot) {
             LookUp = PosLaunchDate + ':' + EIP1559Slider + ':' + ValidatorAdoptionSlider
