@@ -35,8 +35,9 @@ pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
 # define flask app.server
 server = flask.Flask(__name__)
 csp = {
-    'default-src': '\'self\'',
+    'default-src':['\'self\'', '\'unsafe-inline\''],
     'script-src': ['\'self\'', '\'unsafe-inline\''],
+    'style-src': ['\'self\'', '\'unsafe-inline\'']
 }
 Talisman(server, content_security_policy=csp)
 
