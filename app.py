@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import ClientsideFunction, Input, Output, State
 from utils import visualizations
 import flask
+from flask_talisman import Talisman
 
 # Additional dependencies
 import json
@@ -33,6 +34,7 @@ pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
 
 # define flask app.server
 server = flask.Flask(__name__)
+Talisman(server)
 
 app = dash.Dash(__name__,
                 server=server,
