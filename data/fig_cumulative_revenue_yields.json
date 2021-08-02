@@ -13087,9 +13087,6 @@
                 }
             }
         },
-        "title": {
-            "text": "\n            Cumulative Revenue Yields: PoS Issuance, EIP-1559 Priority Fees, MEV\n        "
-        },
         "xaxis": {
             "rangeslider": {
                 "thickness": 0.15,

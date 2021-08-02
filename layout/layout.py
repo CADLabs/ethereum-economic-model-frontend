@@ -1,6 +1,7 @@
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
+from dash_html_components.H2 import H2
 from layout.eth2_specs.eth2_specs import eth2_specs
 from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
@@ -19,10 +20,11 @@ mid_validator_adoption_slider_point = validator_adoption_slider_points[len(valid
 
 layout = html.Div([
     # Eth Supply Simulator Frame
-    html.H1('Welcome to the ETH Supply Simulator!'),
-    html.H2(['Ethereum’s monetary policy is changing. This simulator illuminates potential ETH supply trajectories. The underlying ', html.A('radCAD model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' is open-source.']),
+    html.H1('Welcome to ethmodel.io!'),
+    html.H2(['Ethereum is changing. This page illuminates potential ETH supply trajectories (ETH Supply Simulator) and yield implications for validators (Validator Yield Simulator). The underlying ', html.A('cadCAD/radCAD model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' is open-source, assumptions are summarized ', html.A('here', href='https://github.com/CADLabs/ethereum-economic-model/blob/main/ASSUMPTIONS.md', target='_blank'), '. Repo contributions and feedback are most welcome. For a comprehensive intro to running, modifying and extending the model, take the ', html.A('free online course', href='https://www.cadcad.education/course/masterclass-ethereum', target='_blank'), ' (available shortly).']),
     html.Div([
         html.Div([
+            html.H3('ETH Supply Simulator'),
             # Inputs
             html.Div([
                 # Validator Adoption
@@ -133,7 +135,9 @@ layout = html.Div([
                 dcc.Graph(id='graph-mobile', className='output-graph-mobile'),
                 dcc.Graph(id='graph', className='output-graph')
             ], className='output-row'),
-
+        ], className='simulator-frame'),
+        html.Div([
+            html.H3('Validator Yield Simulator'),
             html.Div([
                 # Validator Adoption
                 html.Div([
@@ -277,7 +281,7 @@ layout = html.Div([
             ], className='output-row-2')
         ], className='simulator-frame'),
         html.Div([
-            html.P(['This ', html.A('radCAD', href='https://github.com/CADLabs/radCAD', target='_blank'), ' front-end is based on version 1.0.0 of the ', html.A('open-source CADLabs Ethereum Economic Model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ', which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an ', html.A('Ethereum ESP', href='https://esp.ethereum.foundation/en/', target='_blank'),' grant. Please refer to the ', html.A('Github repo', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' for context and assumptions of the model. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this ', html.A('feedback form', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), ', or drop us a note at ', html.A('contact@cadlabs.org', href='mailto:contact@cadlabs.org'), '.'])
+            html.P(['This ', html.A('radCAD', href='https://github.com/CADLabs/radCAD', target='_blank'), ' front-end is based on version 1.1.0 of the ', html.A('open-source CADLabs Ethereum Economic Model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ', which had been created in collaboration with the Ethereum Robust Incentives Group (RIG), supported by an ', html.A('Ethereum ESP', href='https://esp.ethereum.foundation/en/', target='_blank'),' grant. Please refer to the ', html.A('Github repo', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' for further context. To suggest improvements of any kind, either submit PRs directly, leave us your ideas/comments/doubts/praise in this ', html.A('feedback form', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), '. For researchers actively using the model or planning its use for a concrete project, we are running a small private channel (drop us a note at ', html.A('contact@cadlabs.org', href='mailto: contact@cadlabs.org', target='_blank'), ' and introduce your project).'])
         ], className='chart-footer'),
     ], className='output-container'),
     html.Footer([
