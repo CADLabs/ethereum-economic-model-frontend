@@ -34,7 +34,11 @@ pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
 
 # define flask app.server
 server = flask.Flask(__name__)
-Talisman(server)
+csp = {
+    'default-src': '\'self\'',
+    'script-src': ['\'self\'', '\'unsafe-inline\''],
+}
+Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
