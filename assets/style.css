@@ -8,7 +8,7 @@
     }
 body{
     margin-top: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     margin-right: 60px;
     margin-left: 60px;
     background-image: url(shapes-background.png);
@@ -59,20 +59,19 @@ footer p {
 footer img {
     padding-right:  40px;
 }
-.rc-slider-dot-active {  
+.rc-slider-dot-active, .rc-slider-track,.rc-slider-handle,.rc-slider-handle:focus,
+.rc-slider-handle:hover,.rc-slider-handle:active,.rc-slider-handle-active:active {  
   border: solid 2px #d0d0f9;
 }
-.rc-slider-track {  
-  border: solid 2px #d0d0f9;
-}
-.rc-slider-handle {  
-  border: solid 2px #d0d0f9;
-}
+
 .rc-slider-mark-text:last-child{
     transform: translateX(50%) !important ;
     right: 0% !important;
     left: auto !important;
     }
+.rangeslider-rangeplot.xy .plot .scatterlayer.mlayer .text{
+    display: none;
+}
 .slider-input{
     margin-top:20px;
     padding-right: 20px;
@@ -121,6 +120,14 @@ footer img {
 @media screen and (max-width: 1200px) {
     .input-row-2{
         grid-template-columns: repeat(2, minmax(250px, 1fr));
+    }
+}
+@media screen and (max-width: 992px) {
+    .input-row{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        grid-gap: 10px;
     }
 }
 @media screen and (max-width: 768px) {
