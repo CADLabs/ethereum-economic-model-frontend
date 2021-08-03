@@ -37,7 +37,8 @@ server = flask.Flask(__name__)
 csp = {
     'default-src':['\'self\'', '\'unsafe-inline\''],
     'script-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\''],
-    'style-src': ['\'self\'', '\'unsafe-inline\'']
+    'style-src': ['\'self\'', '\'unsafe-inline\''],
+    'img-src': ['\'self\'', '\'unsafe-inline\''], 
 }
 Talisman(server, content_security_policy=csp)
 
