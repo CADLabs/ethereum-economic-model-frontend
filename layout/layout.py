@@ -110,7 +110,7 @@ layout = html.Div([
                     ]),
                     # Basefee slider
                     html.Div([
-                        html.Label("Basefee (Gwei per gas)"),
+                        html.Label("Base Fee (Gwei per gas)"),
                         dcc.Slider(
                             id='eip1559-basefee-slider',
                             min=min(eip1559_slider_points),
