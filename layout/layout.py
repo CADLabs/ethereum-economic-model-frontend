@@ -74,7 +74,7 @@ layout = html.Div([
                     dcc.Dropdown(
                         id='pos-launch-date-dropdown',
                         clearable=False,
-                        value='As planned (Dec 2021)',
+                        value='Delayed 3 months (Mar 2022)',
                         options=[
                             {'label': 'Optimistic (Dec 2021)', 'value': 'As planned (Dec 2021)'},
                             {'label': 'Community Consensus (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
@@ -105,10 +105,10 @@ layout = html.Div([
                         dcc.Dropdown(
                             id='eip1559-dropdown',
                             clearable=False,
-                            value='Enabled (Base Fee = 35)',
+                            value='Enabled (Base Fee = 0)',
                             options=[
                                 {'label': 'Disabled (Base Fee = 0)', 'value': 'Disabled (Base Fee = 0)'},
-                                {'label': 'Enabled (Base Fee = 35)', 'value': 'Enabled (Base Fee = 35)'},
+                                {'label': 'Enabled (Base Fee = 30)', 'value': 'Enabled (Base Fee = 30)'},
                                 {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
                             ]
                         )
@@ -128,7 +128,7 @@ layout = html.Div([
                                 75: '75',
                                 100: '100'
                             },
-                            value=35,
+                            value=30,
                             tooltip={'placement': 'top'},
                         )
                     ], className='slider-input')
@@ -240,9 +240,10 @@ layout = html.Div([
                             step=2,
                             marks={
                                 0: '0',
-                                5: '5',
-                                10: '10',
-                                15: '15',
+                                4: '5',
+                                8: '8',
+                                12: '12',
+                                16: '16',
                                 20: '20'
                             },
                             value=2,
@@ -258,10 +259,10 @@ layout = html.Div([
                         dcc.Dropdown(
                             id='mev-dropdown-2',
                             clearable=False,
-                            value='Enabled (MEV = 0.0115)',
+                            value='Enabled (MEV = 0.02)',
                             options=[
                                 {'label': 'Disabled (MEV = 0)', 'value': 'Disabled (MEV = 0)'},
-                                {'label': 'Enabled (MEV = 0.0115)', 'value': 'Enabled (MEV = 0.0115)'},
+                                {'label': 'Enabled (MEV = 0.02)', 'value': 'Enabled (MEV = 0.02)'},
                                 {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
                             ]
                         )
@@ -272,14 +273,15 @@ layout = html.Div([
                         dcc.Slider(
                             id='mev-slider',
                             min=0,
-                            max=0.115,
-                            step=0.0115,
+                            max=0.18,
+                            step=0.02,
                             marks={
                                 0: str(0),
-                                0.0575: str(0.0575),
-                                0.115: str(0.115)
+                                0.06: '0.06',
+                                0.12: '0.12',
+                                0.18: '0.18'
                             },
-                            value=0.0115,
+                            value=0.02,
                             tooltip={'placement': 'top'},
                         )
                     ], className='slider-input')

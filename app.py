@@ -30,8 +30,8 @@ simulation_data = data['data']['simulations']
 historical_data = data['data']['historical']
 
 # Configure scenarios
-eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 35)': 35}
-validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 3 * 0.5, 'High Adoption': 3 * 1.5}
+eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30}
+validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 2, 'High Adoption': 4}
 pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1, 'Delayed 6 months (Jun 2022)': 2}
 
 pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
@@ -244,6 +244,8 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
 
 # Define callback to update graph
 @app.callback(
+    Output('validator-dropdown-2', 'value'),
+    Output('pos-launch-date-dropdown-2', 'value'),
     Output('graph-yields', 'figure'),
     Input('validator-adoption-slider-2', 'value'),
     Input('pos-launch-date-slider-2', 'value'),
@@ -255,9 +257,23 @@ def update_validator_yields_graph(validator_adoption,
                                   priority_fee,
                                   mev):
     pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
-    LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + "{:.4f}".format(mev).rstrip('0') + ':' + "{:.1f}".format(validator_adoption)
+    mev_string = "{:.2f}".format(mev)
+    if mev == 0:
+        mev_string = '0.0'
+    LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
     validator_yields_figure = fig_validator_yields[LookUp]
-    return fig_cumulative_yields
+
+    _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
+    validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
+
+    _pos_activation_scenarios = dict((v, k) for k, v in pos_dates_dropdown_scenarios.items())
+    pos_activation_dropdown = _pos_activation_scenarios.get(pos_launch_date_idx, 'Custom Value')
+
+    return (
+        validator_dropdown,
+        pos_activation_dropdown,
+        validator_yields_figure
+    )
 
 
 if __name__ == '__main__':
