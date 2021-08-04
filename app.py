@@ -30,9 +30,11 @@ simulation_data = data['data']['simulations']
 historical_data = data['data']['historical']
 
 # Configure scenarios
-eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30}
+eip1559_basefee_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30}
+eip1559_priority_fee_scenarios = {'Disabled (Priority Fee = 0)': 0, 'Enabled (Priority Fee = 2)': 2}
 validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 2, 'High Adoption': 4}
-pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1, 'Delayed 6 months (Jun 2022)': 2}
+pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1}
+mev_scenarios = {'Disabled (MEV = 0)': 0, 'Enabled (MEV = 0.02)': 0.02}
 
 pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
 
@@ -226,8 +228,8 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
     _pos_activation_scenarios = dict((v, k) for k, v in pos_dates_dropdown_scenarios.items())
     pos_activation_dropdown = _pos_activation_scenarios.get(pos_launch_date_idx, 'Custom Value')
 
-    _eip1559_scenarios = dict((v, k) for k, v in eip1559_scenarios.items())
-    eip1559_dropdown = _eip1559_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
+    _eip1559_basefee_scenarios = dict((v, k) for k, v in eip1559_basefee_scenarios.items())
+    eip1559_dropdown = _eip1559_basefee_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
 
     
     mobile_figure = copy.deepcopy(fig_data[LookUp])
@@ -246,6 +248,8 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
 @app.callback(
     Output('validator-dropdown-2', 'value'),
     Output('pos-launch-date-dropdown-2', 'value'),
+    Output('eip1559-dropdown-2', 'value'),
+    Output('mev-dropdown-2', 'value'),
     Output('graph-yields', 'figure'),
     Input('validator-adoption-slider-2', 'value'),
     Input('pos-launch-date-slider-2', 'value'),
@@ -260,6 +264,9 @@ def update_validator_yields_graph(validator_adoption,
     mev_string = "{:.2f}".format(mev)
     if mev == 0:
         mev_string = '0.0'
+    elif mev == 0.10:
+        mev_string = '0.1'
+
     LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
     validator_yields_data = fig_validator_yields[LookUp]
 
@@ -274,13 +281,21 @@ def update_validator_yields_graph(validator_adoption,
     _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
     validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
 
+    _eip1559_priority_fee_scenarios = dict((v, k) for k, v in eip1559_priority_fee_scenarios.items())
+    eip1559_priority_fee_dropdown = _eip1559_priority_fee_scenarios.get(priority_fee, 'Enabled (Custom Value)')
+
     _pos_activation_scenarios = dict((v, k) for k, v in pos_dates_dropdown_scenarios.items())
     pos_activation_dropdown = _pos_activation_scenarios.get(pos_launch_date_idx, 'Custom Value')
+
+    _mev_scenarios = dict((v, k) for k, v in mev_scenarios.items())
+    mev_dropdown = _mev_scenarios.get(mev, 'Enabled (Custom Value)')
 
     return (
         validator_dropdown,
         pos_activation_dropdown,
-        validator_yields_figure
+        eip1559_priority_fee_dropdown,
+        mev_dropdown,
+        validator_yields_figure,   
     )
 
 

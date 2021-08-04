@@ -15,7 +15,7 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             return EIP1559Scenarios[EIP1559Dropdown];
         },
         update_pos_date_slider_function: function(PosActivationDropdown) {
-            PosActivationScenarios = {'As planned (Dec 2021)':  0, 'Delayed 3 months (Mar 2022)': 1, 'Delayed 6 months (Jun 2022)': 2}
+            PosActivationScenarios = {'As planned (Dec 2021)':  0, 'Delayed 3 months (Mar 2022)': 1}
             if (PosActivationDropdown === 'Custom Value'){
                 return window.dash_clientside.no_update
             }
