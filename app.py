@@ -21,7 +21,7 @@ with open('data/simulation_data.json') as json_file:
 plots_file = open('./data/plots_data.json',)
 fig_data = json.load(plots_file)
 
-plots_validator_yields_file = open('./data/plots_validator_yields.json',)
+plots_validator_yields_file = open('./data/no_x_new_plots_validator_yields.json',)
 fig_validator_yields = json.load(plots_validator_yields_file)
 
 fig_cumulative_yields = json.load(open('./data/fig_cumulative_revenue_yields.json',))
@@ -261,7 +261,15 @@ def update_validator_yields_graph(validator_adoption,
     if mev == 0:
         mev_string = '0.0'
     LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
-    validator_yields_figure = fig_validator_yields[LookUp]
+    validator_yields_data = fig_validator_yields[LookUp]
+
+    for item in validator_yields_data:
+        item.update({'x': fig_validator_yields['x']})
+
+    validator_yields_figure = {
+        'layout': fig_validator_yields['layout'],
+        'data': validator_yields_data
+    }
 
     _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
     validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
