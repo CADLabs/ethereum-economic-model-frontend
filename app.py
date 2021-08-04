@@ -55,7 +55,28 @@ app = dash.Dash(__name__,
                     {
                         'name': 'HandheldFriendly',
                         'content': 'true'
-                    }])
+                    },
+                    {
+                        'name': 'twitter:card',
+                        'content': 'summary_large_image'
+                    },
+                    {
+                        'name': 'twitter:site',
+                        'content': '@CADLabs_org'
+                    },
+                    {
+                        'name': 'twitter:title',
+                        'content': 'Ethereum Economic Model Frontend'
+                    },
+                    {
+                        'name': 'twitter:description',
+                        'content': 'Ethereum is changing. This page illuminates potential ETH supply trajectories (ETH Supply Simulator) and yield implications for validators (Validator Yield Simulator).'
+                    },
+                    {
+                        'name': 'twitter:image',
+                        'content': 'https://user-images.githubusercontent.com/18421017/128188613-3afa2ab9-a857-416d-a8ab-7d625dbb2161.png'
+                    }   
+                    ])
 
 
 app.title = "Ethereum Economic Model"
