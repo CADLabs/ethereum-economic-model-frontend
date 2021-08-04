@@ -72,10 +72,9 @@ layout = html.Div([
                         clearable=False,
                         value='As planned (Dec 2021)',
                         options=[
-                            {'label': 'As planned (Dec 2021)', 'value': 'As planned (Dec 2021)'},
-                            {'label': 'Delayed 3 months (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
-                            {'label': 'Delayed 6 months (Jun 2022)', 'value': 'Delayed 6 months (Jun 2022)'},
-                            {'label': 'Custom Value', 'value': 'Custom Value'}   
+                            {'label': 'Optimistic (Dec 2021)', 'value': 'As planned (Dec 2021)'},
+                            {'label': 'Community Consensus (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
+                            {'label': 'Real soon™ (Custom Value)', 'value': 'Custom Value'}
                         ])
                     ]),
                     html.Div([
@@ -119,9 +118,11 @@ layout = html.Div([
                             max=max(eip1559_slider_points),
                             step=eip1559_slider_points[1] - eip1559_slider_points[0],
                             marks={
-                                min(eip1559_slider_points): str(min(eip1559_slider_points)),
-                                mid_eip1559_slider_point: str(mid_eip1559_slider_point),
-                                max(eip1559_slider_points): str(max(eip1559_slider_points))
+                                0: '0',
+                                25: '25',
+                                50: '50',
+                                75: '75',
+                                100: '100'
                             },
                             value=25,
                             tooltip={'placement': 'top'},
@@ -182,12 +183,11 @@ layout = html.Div([
                     dcc.Dropdown(
                         id='pos-launch-date-dropdown-2',
                         clearable=False,
-                        value='As planned (Dec 2021)',
+                        value='Delayed 3 months (Mar 2022)',
                         options=[
-                            {'label': 'As planned (Dec 2021)', 'value': 'As planned (Dec 2021)'},
-                            {'label': 'Delayed 3 months (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
-                            {'label': 'Delayed 6 months (Jun 2022)', 'value': 'Delayed 6 months (Jun 2022)'},
-                            {'label': 'Custom Value', 'value': 'Custom Value'}   
+                            {'label': 'Optimistic (Dec 2021)', 'value': 'As planned (Dec 2021)'},
+                            {'label': 'Community Consensus (Mar 2022)', 'value': 'Delayed 3 months (Mar 2022)'},
+                            {'label': 'Real soon™ (Custom Value)', 'value': 'Custom Value'}   
                         ])
                     ]),
                     html.Div([
@@ -210,7 +210,7 @@ layout = html.Div([
                 html.Div([
                     # EIP1559 Scenarios Dropdown
                     html.Div([
-                        html.Label("EIP-1559 Scenario"),
+                        html.Label("EIP-1559 Priority Fee Scenario"),
                         dcc.Dropdown(
                             id='eip1559-dropdown-2',
                             clearable=False,
@@ -231,9 +231,11 @@ layout = html.Div([
                             max=20,
                             step=2,
                             marks={
-                                0: str(0),
-                                10: str(10),
-                                20: str(20)
+                                0: '0',
+                                5: '5',
+                                10: '10',
+                                15: '15',
+                                20: '20'
                             },
                             value=2,
                             tooltip={'placement': 'top'},
