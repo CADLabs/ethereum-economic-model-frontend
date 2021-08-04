@@ -49,13 +49,17 @@ layout = html.Div([
                         html.Label("New Validators per Epoch"),
                         dcc.Slider(
                             id='validator-adoption-slider',
-                            min=min(validator_adoption_slider_points),
-                            max=max(validator_adoption_slider_points),
-                            step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
+                            min=0,
+                            max=6,
+                            step=1,
                             marks={
-                                int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
-                                mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
-                                max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
+                                0: '0',
+                                1: '1',
+                                2: '2',
+                                3: '3',
+                                4: '4',
+                                5: '5',
+                                6: '6',
                             },
                             value=3,
                             tooltip={'placement': 'top'}
@@ -101,10 +105,10 @@ layout = html.Div([
                         dcc.Dropdown(
                             id='eip1559-dropdown',
                             clearable=False,
-                            value='Enabled (Base Fee = 25)',
+                            value='Enabled (Base Fee = 35)',
                             options=[
                                 {'label': 'Disabled (Base Fee = 0)', 'value': 'Disabled (Base Fee = 0)'},
-                                {'label': 'Enabled (Base Fee = 25)', 'value': 'Enabled (Base Fee = 25)'},
+                                {'label': 'Enabled (Base Fee = 35)', 'value': 'Enabled (Base Fee = 35)'},
                                 {'label': 'Enabled (Custom Value)', 'value': 'Enabled (Custom Value)'}
                             ]
                         )
@@ -124,7 +128,7 @@ layout = html.Div([
                                 75: '75',
                                 100: '100'
                             },
-                            value=25,
+                            value=35,
                             tooltip={'placement': 'top'},
                         )
                     ], className='slider-input')
@@ -162,13 +166,17 @@ layout = html.Div([
                         html.Label("New Validators per Epoch"),
                         dcc.Slider(
                             id='validator-adoption-slider-2',
-                            min=min(validator_adoption_slider_points),
-                            max=max(validator_adoption_slider_points),
-                            step=validator_adoption_slider_points[1] - validator_adoption_slider_points[0],
+                            min=0,
+                            max=6,
+                            step=1,
                             marks={
-                                int(min(validator_adoption_slider_points)): str(int(min(validator_adoption_slider_points))),
-                                mid_validator_adoption_slider_point: str(mid_validator_adoption_slider_point),
-                                max(validator_adoption_slider_points): str(max(validator_adoption_slider_points)),
+                                0: '0',
+                                1: '1',
+                                2: '2',
+                                3: '3',
+                                4: '4',
+                                5: '5',
+                                6: '6',
                             },
                             value=3,
                             tooltip={'placement': 'top'}

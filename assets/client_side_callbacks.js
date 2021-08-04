@@ -1,7 +1,7 @@
 window.dash_clientside = Object.assign({}, window.dash_clientside, {
     clientside: {
         update_eip1559_slider_function: function(EIP1559Dropdown) {
-            EIP1559Scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 25)': 25, }
+            EIP1559Scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 35)': 35, }
             if (EIP1559Dropdown === 'Enabled (Custom Value)'){
                 return window.dash_clientside.no_update
             }
@@ -59,8 +59,8 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             if (EIP1559Slider == 0){
                 EIP1559Dropdown = 'Disabled (Base Fee = 0)'
             }
-            else if (EIP1559Slider == 25){
-                EIP1559Dropdown = 'Enabled (Base Fee = 25)'
+            else if (EIP1559Slider == 35){
+                EIP1559Dropdown = 'Enabled (Base Fee = 35)'
             }
             else {
                 EIP1559Dropdown = 'Enabled (Custom Value)'

@@ -30,7 +30,7 @@ simulation_data = data['data']['simulations']
 historical_data = data['data']['historical']
 
 # Configure scenarios
-eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 25)': 25}
+eip1559_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 35)': 35}
 validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 3 * 0.5, 'High Adoption': 3 * 1.5}
 pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1, 'Delayed 6 months (Jun 2022)': 2}
 
@@ -257,7 +257,7 @@ def update_validator_yields_graph(validator_adoption,
     pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
     LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + "{:.4f}".format(mev).rstrip('0') + ':' + "{:.1f}".format(validator_adoption)
     validator_yields_figure = fig_validator_yields[LookUp]
-    return validator_yields_figure
+    return fig_cumulative_yields
 
 
 if __name__ == '__main__':
