@@ -21,7 +21,7 @@ mid_validator_adoption_slider_point = validator_adoption_slider_points[len(valid
 layout = html.Div([
     # Eth Supply Simulator Frame
     html.H1('Welcome to ethmodel.io!'),
-    html.H2(['Ethereum is changing. This page illuminates potential ETH supply trajectories (ETH Supply Simulator) and yield implications for validators (Validator Yield Simulator). The underlying ', html.A('cadCAD/radCAD model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' is open-source, assumptions are summarized ', html.A('here', href='https://github.com/CADLabs/ethereum-economic-model/blob/main/ASSUMPTIONS.md', target='_blank'), '. Repo contributions and ', html.A('feedback', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), ' are most welcome. For a comprehensive intro to running, modifying and extending the model, consider the upcoming ', html.A('cadCAD Masterclass', href='https://www.cadcad.education/course/masterclass-ethereum', target='_blank'), ' (free). If you enjoy using this website, consider ', html.A('sharing', href='https://twitter.com/intent/tweet?text=Check%20out%20this%20@cadCAD_org%20web%20frontend.%20It%20enables%20Ethereum%20protocol%20economic%20scenario%20analysis%20and%20runs%20an%20open-source%20python%20model%20available%20at&url=https://bit.ly/3jnuISh.', target='_blank'), ' it, so more people benefit.']),
+    html.H2(['Ethereum is changing. This page illuminates potential ETH supply trajectories (ETH Supply Simulator) and yield implications for validators (Validator Yield Simulator). The underlying ', html.A('cadCAD/radCAD model', href='https://github.com/CADLabs/ethereum-economic-model', target='_blank'), ' is open-source, assumptions are summarized ', html.A('here', href='https://github.com/CADLabs/ethereum-economic-model/blob/main/ASSUMPTIONS.md', target='_blank'), '. Repo contributions and ', html.A('feedback', href='https://docs.google.com/forms/d/1LNhCFJ4-Jj7wg6bQJG1UGuP69zMU97L-g38nobTJs8I/viewform?edit_requested=true', target='_blank'), ' are most welcome. For a comprehensive intro to running, modifying and extending the model, consider the upcoming ', html.A('cadCAD Masterclass', href='https://www.cadcad.education/course/masterclass-ethereum', target='_blank'), ' (free). If you enjoy using this website, consider ', html.A('sharing', href='https://twitter.com/intent/tweet?text=Check%20out%20ethmodel.io,%20an%20Ethereum%20protocol%20simulation%20web%20frontend%20of%20the%20open-source%20@cadCAD_org%20model%20available%20at&url=https://bit.ly/3jnuISh.', target='_blank'), ' it, so more people benefit.']),
     html.Div([
         html.Div([
             html.H3('ETH Supply Simulator'),
@@ -98,7 +98,7 @@ layout = html.Div([
                 html.Div([
                     # EIP1559 Scenarios Dropdown
                     html.Div([
-                        html.Label("EIP-1559 Scenario"),
+                        html.Label("EIP-1559 Base Fee Scenario"),
                         dcc.Dropdown(
                             id='eip1559-dropdown',
                             clearable=False,
