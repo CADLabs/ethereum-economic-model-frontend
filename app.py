@@ -21,6 +21,9 @@ with open('data/simulation_data.json') as json_file:
 plots_file = open('./data/plots_data.json',)
 fig_data = json.load(plots_file)
 
+plots_validator_yields_file = open('./data/plots_validator_yields.json',)
+fig_validator_yields = json.load(plots_validator_yields_file)
+
 fig_cumulative_yields = json.load(open('./data/fig_cumulative_revenue_yields.json',))
 
 simulation_data = data['data']['simulations']
@@ -133,7 +136,7 @@ app.clientside_callback(
         namespace='clientside',
         function_name='update_eip1559_priority_fee_slider_function'
     ),
-    Output('eip1559-basefee-slider-2', 'value'),
+    Output('eip1559-priority-fee-slider', 'value'),
     Input('eip1559-dropdown-2', 'value')
 )
 app.clientside_callback(
@@ -157,7 +160,7 @@ app.clientside_callback(
         namespace='clientside',
         function_name='update_mev_slider_function'
     ),
-    Output('mev-slider-2', 'value'),
+    Output('mev-slider', 'value'),
     Input('mev-dropdown-2', 'value')
 )
 """
@@ -184,7 +187,6 @@ app.clientside_callback(
     Output('eip1559-dropdown', 'value'),
     Output('graph', 'figure'),
     Output('graph-mobile', 'figure'),
-    Output('graph-yields', 'figure'),
     [Input('validator-adoption-slider', 'value'),
      Input('pos-launch-date-slider', 'value'),
      Input('eip1559-basefee-slider', 'value')]
@@ -217,8 +219,24 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
         eip1559_dropdown,
         desktop_figure,
         mobile_figure,
-        fig_cumulative_yields
     )
+
+# Define callback to update graph
+@app.callback(
+    Output('graph-yields', 'figure'),
+    Input('validator-adoption-slider-2', 'value'),
+    Input('pos-launch-date-slider-2', 'value'),
+    Input('eip1559-priority-fee-slider', 'value'),
+    Input('mev-slider', 'value')
+)
+def update_validator_yields_graph(validator_adoption,
+                                  pos_launch_date_idx,
+                                  priority_fee,
+                                  mev):
+    pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
+    LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + "{:.4f}".format(mev).rstrip('0') + ':' + "{:.1f}".format(validator_adoption)
+    validator_yields_figure = fig_validator_yields[LookUp]
+    return validator_yields_figure
 
 
 if __name__ == '__main__':

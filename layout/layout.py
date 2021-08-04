@@ -226,7 +226,7 @@ layout = html.Div([
                     html.Div([
                         html.Label("Priority Fee (Gwei per gas)"),
                         dcc.Slider(
-                            id='eip1559-basefee-slider-2',
+                            id='eip1559-priority-fee-slider',
                             min=0,
                             max=20,
                             step=2,
@@ -260,14 +260,14 @@ layout = html.Div([
                     html.Div([
                         html.Label("MEV (ETH per block)"),
                         dcc.Slider(
-                            id='mev-slider-2',
+                            id='mev-slider',
                             min=0,
-                            max=0.5,
+                            max=0.115,
                             step=0.0115,
                             marks={
                                 0: str(0),
-                                0.25: str(0.25),
-                                0.5: str(0.5)
+                                0.0575: str(0.0575),
+                                0.115: str(0.115)
                             },
                             value=0.0115,
                             tooltip={'placement': 'top'},
