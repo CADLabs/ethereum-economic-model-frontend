@@ -91,7 +91,7 @@ layout = html.Div([
                             marks={
                             idx: datetime.strptime(date, '%Y-%m-%d').strftime('%y-%m') for idx, date in enumerate(pos_dates_dropdown_poits)
                             },
-                            value=0,
+                            value=1,
                         )
                     ], className='slider-input')
 
@@ -208,7 +208,7 @@ layout = html.Div([
                             marks={
                             idx: datetime.strptime(date, '%Y-%m-%d').strftime('%y-%m') for idx, date in enumerate(pos_dates_dropdown_poits)
                             },
-                            value=0,
+                            value=1,
                         )
                     ], className='slider-input')
 
