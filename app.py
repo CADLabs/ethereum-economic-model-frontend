@@ -55,7 +55,16 @@ app = dash.Dash(__name__,
                     {
                         'name': 'HandheldFriendly',
                         'content': 'true'
-                    }])
+                    },
+                    {
+                        'name' : 'twitter:card',
+                        'content' : 'summary_large_image'
+                    },
+                    {
+                        'name': 'twitter:title',
+                        'content': 'Ethereum Economic Model'
+                    }
+                    ])
 
 
 app.title = "Ethereum Economic Model"
