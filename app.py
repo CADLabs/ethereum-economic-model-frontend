@@ -57,8 +57,12 @@ app = dash.Dash(__name__,
                         'content': 'true'
                     },
                     {
-                        'name' : 'twitter:card',
-                        'content' : 'summary_large_image'
+                        'name': 'twitter:card',
+                        'content': 'summary_large_image'
+                    },
+                    {
+                        'name': 'twitter:site',
+                        'content': '@CADLabs_org'
                     },
                     {
                         'name': 'twitter:title',
