@@ -48,7 +48,7 @@ csp = {
     'style-src': ['\'self\'', '\'unsafe-inline\''],
     'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
 }
-#Talisman(server, content_security_policy=csp)
+Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
