@@ -100,6 +100,7 @@ app.index_string = """<!DOCTYPE html>
             gtag('js', new Date());
 
             gtag('config', 'G-2XGCY6GEQJ');
+            ga('send', 'pageview');
         </script>
         {%metas%}
         <title>{%title%}</title>
