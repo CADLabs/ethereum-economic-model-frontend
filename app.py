@@ -13,14 +13,7 @@ import pandas as pd
 from datetime import datetime
 
 # Import layout components
-from layout.layout import layout
-
-
-plots_file = open('./data/plots_data.json',)
-fig_data = json.load(plots_file)
-
-plots_validator_yields_file = open('./data/no_x_new_plots_validator_yields.json',)
-fig_validator_yields = json.load(plots_validator_yields_file)
+from layout.layout import layout, fig_data, fig_validator_yields
 
 
 # Configure scenarios
@@ -48,7 +41,7 @@ csp = {
     'style-src': ['\'self\'', '\'unsafe-inline\''],
     'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
 }
-Talisman(server, content_security_policy=csp)
+#Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
