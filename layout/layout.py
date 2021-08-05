@@ -273,13 +273,13 @@ layout = html.Div([
                         dcc.Slider(
                             id='mev-slider',
                             min=0,
-                            max=0.18,
+                            max=0.30,
                             step=0.02,
                             marks={
                                 0: str(0),
-                                0.06: '0.06',
-                                0.12: '0.12',
-                                0.18: '0.18'
+                                0.10: '0.10',
+                                0.20: '0.20',
+                                0.30: '0.30'
                             },
                             value=0.02,
                             tooltip={'placement': 'top'},
