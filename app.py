@@ -15,9 +15,6 @@ from datetime import datetime
 # Import layout components
 from layout.layout import layout
 
-# Import simulation data
-with open('data/simulation_data.json') as json_file:
-    data = json.load(json_file)
 
 plots_file = open('./data/plots_data.json',)
 fig_data = json.load(plots_file)
@@ -25,10 +22,6 @@ fig_data = json.load(plots_file)
 plots_validator_yields_file = open('./data/no_x_new_plots_validator_yields.json',)
 fig_validator_yields = json.load(plots_validator_yields_file)
 
-fig_cumulative_yields = json.load(open('./data/fig_cumulative_revenue_yields.json',))
-
-simulation_data = data['data']['simulations']
-historical_data = data['data']['historical']
 
 # Configure scenarios
 eip1559_basefee_scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30}
@@ -37,7 +30,15 @@ validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 2, 'High Adoption':
 pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1}
 mev_scenarios = {'Disabled (MEV = 0)': 0, 'Enabled (MEV = 0.02)': 0.02}
 
-pos_dates_dropdown_poits = data['info']['parameters']['0']['points']
+pos_dates_dropdown_poits = [
+                    "2021-12-1",
+                    "2022-3-1",
+                    "2022-6-1",
+                    "2022-9-1",
+                    "2022-12-1",
+                    "2023-3-1",
+                    "2023-6-1"
+]
 
 # define flask app.server
 server = flask.Flask(__name__)
@@ -47,7 +48,7 @@ csp = {
     'style-src': ['\'self\'', '\'unsafe-inline\''],
     'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
 }
-Talisman(server, content_security_policy=csp)
+#Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
@@ -90,50 +91,6 @@ app = dash.Dash(__name__,
 
 app.title = "Ethereum Economic Model"
 app.layout = layout
-
-
-# Util functions
-def load_simulation(validator_adoption, pos_launch_date, eip1559_basefee):
-    simulation_data_lookup = (str(pos_launch_date).replace('/', '-').replace('-0', '-') +
-                              ':' + str(eip1559_basefee) + ':' +
-                              "{:.1f}".format(validator_adoption))
-
-    historical_supply_inflation_pct = historical_data['supply_inflation_pct']
-    historical_eth_supply = historical_data['eth_supply']
-    historical_timestamp = historical_data['timestamp']
-
-    simulation_supply_inflation_pct = simulation_data[simulation_data_lookup]['supply_inflation_pct']
-    simulation_eth_supply = simulation_data[simulation_data_lookup]['eth_supply']
-    simulation_timestamp = simulation_data['timestamp']
-
-    data_historical = {
-        'timestamp': historical_timestamp,
-        'eth_supply': historical_eth_supply,
-        'supply_inflation_pct': historical_supply_inflation_pct,
-        'subset': 0
-    }
-
-    data_simulation = {
-        'timestamp': simulation_timestamp,
-        'eth_supply': simulation_eth_supply,
-        'supply_inflation_pct': simulation_supply_inflation_pct,
-        'subset': 0
-    }
-
-    df_historical_data = pd.DataFrame.from_dict(data_historical)
-    df_historical_data['timestamp'] = pd.to_datetime(df_historical_data['timestamp'])
-
-    df_simulation_data = pd.DataFrame.from_dict(data_simulation)
-    df_simulation_data['timestamp'] = pd.to_datetime(df_simulation_data['timestamp'])
-
-    parameters = {}
-    parameters["date_eip1559"] = [datetime.strptime("2021/07/14", "%Y/%m/%d")]
-    parameters["date_pos"] = [datetime.strptime(pos_launch_date, "%Y/%m/%d")]
-
-    fig = visualizations.plot_eth_supply_and_inflation(df_historical_data,
-                                                       df_simulation_data,
-                                                       parameters=parameters)
-    return fig
 
 
 # Callbacks
@@ -269,10 +226,9 @@ def update_validator_yields_graph(validator_adoption,
                                   mev):
     pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
     mev_string = "{:.2f}".format(mev)
-    if mev == 0:
-        mev_string = '0.0'
-    elif mev == 0.10:
-        mev_string = '0.1'
+    if mev in [0, 0.10, 0.20, 0.30]:
+        mev_string = "{:.1f}".format(mev)
+
 
     LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
     validator_yields_data = fig_validator_yields[LookUp]
