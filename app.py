@@ -84,7 +84,7 @@ app = dash.Dash(__name__,
                     },
                     {
                         'name': 'twitter:image',
-                        'content': 'https://user-images.githubusercontent.com/18421017/128188613-3afa2ab9-a857-416d-a8ab-7d625dbb2161.png'
+                        'content': 'https://user-images.githubusercontent.com/18421017/128346326-bfd67a8f-35bf-4a07-82fc-23e115dc3259.png'
                     }   
                     ])
 
