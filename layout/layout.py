@@ -5,11 +5,32 @@ from dash_html_components.H2 import H2
 from layout.eth2_specs.eth2_specs import eth2_specs
 from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
+import copy
 import json
 from datetime import datetime
 
 simulation_file = open('./data/simulation_data.json',)
 simulation_data = json.load(simulation_file)
+
+plots_file = open('./data/plots_data.json',)
+fig_data = json.load(plots_file)
+
+plots_validator_yields_file = open('./data/no_x_new_plots_validator_yields.json',)
+fig_validator_yields = json.load(plots_validator_yields_file)
+
+
+initial_fig_eth_supply = {
+    'layout':fig_data['2022-3-1:30:3']["layout"],
+    'data': fig_data["historical"]["data"] + fig_data['2022-3-1:30:3']["data"]
+}
+initial_fig_eth_supply_mobile = copy.deepcopy(initial_fig_eth_supply)
+initial_fig_eth_supply_mobile["layout"]["annotations"].clear() 
+
+initial_fig_validator_yields =  {
+        'layout': fig_validator_yields['layout'],
+        'data': fig_validator_yields['2022-3-1:2:0.02:3']
+    }
+
 
 pos_dates_dropdown_poits = simulation_data['info']['parameters']['0']['points']
 eip1559_slider_points = simulation_data['info']['parameters']['1']['points']
@@ -137,8 +158,8 @@ layout = html.Div([
             
             # Output
             html.Div([
-                dcc.Graph(id='graph-mobile', className='output-graph-mobile'),
-                dcc.Graph(id='graph', className='output-graph')
+                dcc.Graph(id='graph-mobile', className='output-graph-mobile', figure=initial_fig_eth_supply_mobile),
+                dcc.Graph(id='graph', className='output-graph', figure=initial_fig_eth_supply)
             ], className='output-row'),
         ], className='simulator-frame'),
         html.Div([
@@ -289,7 +310,7 @@ layout = html.Div([
             ], className='input-row-2'),
             # Output
             html.Div([
-                dcc.Graph(id='graph-yields', className='output-graph-2')
+                dcc.Graph(id='graph-yields', className='output-graph-2', figure=initial_fig_validator_yields)
             ], className='output-row-2')
         ], className='simulator-frame'),
         html.Div([
