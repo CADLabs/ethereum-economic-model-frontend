@@ -48,7 +48,7 @@ csp = {
     'style-src': ['\'self\'', '\'unsafe-inline\''],
     'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
 }
-Talisman(server, content_security_policy=csp)
+#Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
@@ -88,6 +88,33 @@ app = dash.Dash(__name__,
                     }   
                     ])
 
+
+app.index_string = """<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2XGCY6GEQJ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-2XGCY6GEQJ');
+        </script>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>"""
 
 app.title = "Ethereum Economic Model"
 app.layout = layout
