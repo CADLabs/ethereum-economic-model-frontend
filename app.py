@@ -7,6 +7,7 @@ import flask
 from flask_talisman import Talisman
 
 # Additional dependencies
+import os
 import json
 import copy
 import pandas as pd
@@ -91,34 +92,6 @@ app = dash.Dash(__name__,
 
 app.title = "Ethereum Economic Model"
 app.layout = layout
-
-app.index_string = """<!DOCTYPE html>
-<html>
-    <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-        
-        ga('create', 'UA-204257094-1', 'auto');
-        ga('send', 'pageview');
-        </script>
-        {%metas%}
-        <title>{%title%}</title>
-        {%favicon%}
-        {%css%}
-    </head>
-    <body>
-        {%app_entry%}
-        <footer>
-            {%config%}
-            {%scripts%}
-            {%renderer%}
-        </footer>
-    </body>
-</html>"""
-
 
 
 
@@ -290,6 +263,11 @@ def update_validator_yields_graph(validator_adoption,
         validator_yields_figure,   
     )
 
+if 'DYNO' in os.environ:
+    app.scripts.config.serve_locally = False
+    app.scripts.append_script({
+        'external_url': 'https://gist.githubusercontent.com/marthendalnunes/cc3cd7b5cb15955b64bbe50270de9e73/raw/07564915c06d2fdf2a2d863a2215d9701c3d79a1/analytics.js'
+    })
 
 if __name__ == '__main__':
     app.run_server(debug=False)
