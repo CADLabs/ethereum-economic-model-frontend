@@ -7,10 +7,9 @@
 """
 
 import typing
-from pytest import approx
 
 import model.constants as constants
-import model.parts.spec as spec
+import model.parts.utils.ethereum_spec as spec
 from model.types import ETH, Gwei
 
 
@@ -50,6 +49,9 @@ def policy_staking(
 
 
 def policy_validators(params, substep, state_history, previous_state):
+    """Valdiator Policy Function
+    Calculate the number of validators driven by the ETH staked or validator processes.
+    """
     # Parameters
     dt = params["dt"]
     eth_staked_process = params["eth_staked_process"]
@@ -68,11 +70,6 @@ def policy_validators(params, substep, state_history, previous_state):
     # Calculate the number of validators using ETH staked
     if eth_staked_process(0, 0) != None:
         eth_staked = eth_staked_process(run, timestep * dt)
-        number_of_validators = int(
-            round(eth_staked / (average_effective_balance / constants.gwei))
-        )
-    elif number_of_validators == 0:
-        eth_staked = previous_state["eth_staked"]
         number_of_validators = int(
             round(eth_staked / (average_effective_balance / constants.gwei))
         )
@@ -96,6 +93,8 @@ def policy_validators(params, substep, state_history, previous_state):
     number_of_validators_offline = number_of_validators - number_of_validators_online
 
     # Assert expected conditions
+    # Assume a participation of more than 2/3 due to lack of inactivity leak mechanism
+    assert validator_uptime >= 2 / 3, "Validator uptime must be greater than 2/3"
     assert (
         number_of_validators
         == number_of_validators_online + number_of_validators_offline
@@ -112,6 +111,9 @@ def policy_validators(params, substep, state_history, previous_state):
 def policy_average_effective_balance(
     params, substep, state_history, previous_state
 ) -> typing.Tuple[str, Gwei]:
+    """Average Effective Balance Policy Function
+    Calculate the validator average effective balance.
+    """
     # State Variables
     number_of_validators = previous_state["number_of_validators"]
 

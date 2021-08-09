@@ -1,0 +1,2 @@
+data/plots_validator_yields.json filter=lfs diff=lfs merge=lfs -text
+*.json filter=lfs diff=lfs merge=lfs -text
