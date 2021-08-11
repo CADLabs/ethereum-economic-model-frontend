@@ -47,14 +47,14 @@ eth_supply_simulator_layout = html.Div([
         html.Div([
             # Max Validator Cap Dropdown
             html.Div([
-                html.Label("Max Validator Cap Scenario"),
+                html.Label("Validator Cap Scenario"),
                 dcc.Dropdown(
                 id='max-validator-cap-dropdown',
                 clearable=False,
                 value='No Validator Cap',
                 options=[
                     {'label': 'No Validator Cap', 'value': 'No Validator Cap'},
-                    {'label': "Vitalik's proposal (max 524,288 validators)", 'value': "Vitalik's proposal (max 524,288 validators)"},
+                    {'label': "Vitalik's Proposal (max 524,288 validators)", 'value': "Vitalik's Proposal (max 524,288 validators)"},
                     {'label': 'Custom Value', 'value': 'Custom Value'}
                 ] 
                 )
@@ -202,14 +202,14 @@ validator_yield_simulator_layout = html.Div([
         html.Div([
             # Max Validator Cap Dropdown
             html.Div([
-                html.Label("Max Validator Cap Scenario"),
+                html.Label("Validator Cap Scenario"),
                 dcc.Dropdown(
                 id='max-validator-cap-dropdown-2',
                 clearable=False,
                 value='No Validator Cap',
                 options=[
                     {'label': 'No Validator Cap', 'value': 'No Validator Cap'},
-                    {'label': "Vitalik's proposal (max 524,288 validators)", 'value': "Vitalik's proposal (max 524,288 validators)"},
+                    {'label': "Vitalik's Proposal (max 524,288 validators)", 'value': "Vitalik's Proposal (max 524,288 validators)"},
                     {'label': 'Custom Value', 'value': 'Custom Value'}
                 ] 
                 )

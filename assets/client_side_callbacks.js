@@ -1,7 +1,7 @@
 window.dash_clientside = Object.assign({}, window.dash_clientside, {
     clientside: {
         update_max_validator_cap_slider_function: function(MaxValidatorCapDropdown) {
-            MaxValidatorScenarios = {'No Validator Cap': 0, "Vitalik's proposal (max 524,288 validators)": 524}
+            MaxValidatorScenarios = {'No Validator Cap': 0, "Vitalik's Proposal (max 524,288 validators)": 524}
             if (MaxValidatorCapDropdown === 'Custom Value'){
                 return window.dash_clientside.no_update
             }

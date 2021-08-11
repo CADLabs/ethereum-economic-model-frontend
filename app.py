@@ -22,7 +22,7 @@ eip1559_priority_fee_scenarios = {'Disabled (Priority Fee = 0)': 0, 'Enabled (Pr
 validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 2, 'High Adoption': 4}
 pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1}
 mev_scenarios = {'Disabled (MEV = 0)': 0, 'Enabled (MEV = 0.02)': 0.02}
-max_validator_cap_scenarios = {'No Validator Cap': 0, "Vitalik's proposal (max 524,288 validators)": 524}
+max_validator_cap_scenarios = {'No Validator Cap': 0, "Vitalik's Proposal (max 524,288 validators)": 524}
 
 pos_dates_dropdown_poits = [
                     "2021-12-1",
