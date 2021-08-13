@@ -1,9 +1,9 @@
 import copy
 
-import model.constants as constants
-from model.stochastic_processes import create_stochastic_process_realizations
-from model.types import Stage
-from experiments.default_experiment import experiment
+import ethereum_economic_model.model.constants as constants
+from ethereum_economic_model.model.stochastic_processes import create_stochastic_process_realizations
+from ethereum_economic_model.model.types import Stage
+from ethereum_economic_model.experiments.default_experiment import experiment
 
 
 # Make a copy of the default experiment to avoid mutation

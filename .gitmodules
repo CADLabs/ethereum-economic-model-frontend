@@ -1,3 +1,3 @@
 [submodule "model"]
-	path = model
+	path = ethereum_economic_model
 	url = https://github.com/CADLabs/ethereum-economic-model.git
