@@ -19,17 +19,18 @@ from datetime import datetime
 simulation_file = open('./data/simulation_data.json',)
 simulation_data = json.load(simulation_file)
 
-plots_file = open('./data/plots_data_new.json',)
-fig_data = json.load(plots_file)
+#plots_file = open('./data/plots_data_new.json',)
+fig_data = compress_json.load('./data/plots_data_new.json.gz')
 
 #plots_validator_yields_file = open('./data/no_x_new_plots_validator_yields.json',)
 fig_validator_yields = compress_json.load('./data/plots_validator_yields.json.gz')
 
 
-initial_fig_eth_supply = {
-    'layout':fig_data['2021-12-1:0:0:None']["layout"],
-    'data': fig_data["historical"]["data"] + fig_data['2021-12-1:0:0:None']["data"]
-}
+initial_fig_eth_supply = fig_data['2021-12-1:0:0:None']
+#{
+#    'layout':fig_data['2021-12-1:0:0:None']["layout"],
+#    'data': fig_data["historical"]["data"] + fig_data['2021-12-1:0:0:None']["data"]
+#}
 initial_fig_eth_supply_mobile = copy.deepcopy(initial_fig_eth_supply)
 initial_fig_eth_supply_mobile["layout"]["annotations"].clear() 
 
