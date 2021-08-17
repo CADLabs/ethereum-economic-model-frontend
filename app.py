@@ -22,7 +22,9 @@ eip1559_priority_fee_scenarios = {'Disabled (Priority Fee = 0)': 0, 'Enabled (Pr
 validator_scenarios = {'Normal Adoption': 3, 'Low Adoption': 2, 'High Adoption': 4}
 pos_dates_dropdown_scenarios = {'As planned (Dec 2021)': 0, 'Delayed 3 months (Mar 2022)': 1}
 mev_scenarios = {'Disabled (MEV = 0)': 0, 'Enabled (MEV = 0.02)': 0.02}
-max_validator_cap_scenarios = {'No Validator Cap': 0, "Vitalik's Proposal (max 524,288 validators)": 524}
+max_validator_cap_scenarios = {'No Validator Cap': 0, "Vitalik's Proposal (max 524K validators)": 524}
+max_validator_cap_values = {0: 'None', 524: '524288', 1048: '1048576'}
+
 
 pos_dates_dropdown_poits = [
                     "2021-12-1",
@@ -195,10 +197,10 @@ def update_output_graph(max_validator_cap,
                         pos_launch_date_idx,
                         eip1559_base_fee): 
     pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
-    LookUp = str(pos_launch_date) + ':' + str(eip1559_base_fee) + ':' + str(validator_adoption)
-    HistoricalPlotData = fig_data["historical"]["data"]
-    if (len(fig_data[LookUp]["data"]) < 6):
-        fig_data[LookUp]["data"] = HistoricalPlotData + fig_data[LookUp]["data"]
+    LookUp = (str(pos_launch_date) + ':' +
+              str(eip1559_base_fee) + ':' +
+              str(validator_adoption) + ':' +
+              max_validator_cap_values[max_validator_cap])
 
     _max_validator_cap_scenarios = dict((v, k) for k, v in max_validator_cap_scenarios.items())
     max_validator_cap_dropdown = _max_validator_cap_scenarios.get(max_validator_cap, 'Custom Value')
@@ -250,17 +252,21 @@ def update_validator_yields_graph(max_validator_cap,
     if mev in [0, 0.10, 0.20, 0.30]:
         mev_string = "{:.1f}".format(mev)
 
-
-    LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
+    LookUp = (str(pos_launch_date) + ':' +
+             str(priority_fee) + ':' +
+             mev_string + ':' +
+             str(validator_adoption) + ':' +
+              max_validator_cap_values[max_validator_cap])
     validator_yields_data = fig_validator_yields[LookUp]
 
-    for item in validator_yields_data:
-        item.update({'x': fig_validator_yields['x']})
+    #for item in validator_yields_data:
+    #    item.update({'x': fig_validator_yields['x']})
 
-    validator_yields_figure = {
-        'layout': fig_validator_yields['layout'],
-        'data': validator_yields_data
-    }
+    validator_yields_figure = validator_yields_data
+    #{
+    #    'layout': fig_validator_yields['layout'],
+    #   'data': validator_yields_data
+    #}
 
     _max_validator_cap_scenarios = dict((v, k) for k, v in max_validator_cap_scenarios.items())
     max_validator_cap_dropdown = _max_validator_cap_scenarios.get(max_validator_cap, 'Custom Value')
