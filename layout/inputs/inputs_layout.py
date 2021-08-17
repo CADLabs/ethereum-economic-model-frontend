@@ -35,7 +35,7 @@ def get_max_validator_cap_layout(id_dict, className):
             # Max Validator Cap Slider
             html.Div(
                 [
-                    html.Label("Max Validator Cap (N° of Awake Validators)"),
+                    html.Label("Max Validator Cap (# of Awake Validators)"),
                     dcc.Slider(
                         id=id_dict['slider'],
                         min=0,
