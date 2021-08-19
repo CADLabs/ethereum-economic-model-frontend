@@ -1,19 +1,24 @@
 # Dash dependencies
 import dash
-import dash_bootstrap_components as dbc
 from dash.dependencies import ClientsideFunction, Input, Output, State
-from utils import visualizations
 import flask
 from flask_talisman import Talisman
 
 # Additional dependencies
 import json
+import gzip
 import copy
 import pandas as pd
 from datetime import datetime
 
 # Import layout components
-from layout.layout import layout, fig_data, fig_validator_yields
+from layout.layout import layout
+
+with gzip.open('./data/plots_data_new.json.gz', 'r') as fin:
+    fig_data = json.loads(fin.read().decode('utf-8'))
+
+with gzip.open('./data/plots_validator_yields.json.gz', 'r') as fin:
+    fig_validator_yields = json.loads(fin.read().decode('utf-8'))
 
 
 # Configure scenarios
@@ -44,7 +49,7 @@ csp = {
     'style-src': ['\'self\'', '\'unsafe-inline\''],
     'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
 }
-Talisman(server, content_security_policy=csp)
+#Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
@@ -257,16 +262,15 @@ def update_validator_yields_graph(max_validator_cap,
              mev_string + ':' +
              str(validator_adoption) + ':' +
               max_validator_cap_values[max_validator_cap])
-    validator_yields_data = fig_validator_yields[LookUp]
+    validator_yields_data = fig_validator_yields[LookUp]['data']
 
-    #for item in validator_yields_data:
-    #    item.update({'x': fig_validator_yields['x']})
+    for item in validator_yields_data:
+        item.update({'x': fig_validator_yields['data_x']})
 
-    validator_yields_figure = validator_yields_data
-    #{
-    #    'layout': fig_validator_yields['layout'],
-    #   'data': validator_yields_data
-    #}
+    validator_yields_figure = {
+       'layout': fig_validator_yields['layout'],
+       'data': validator_yields_data
+    }
 
     _max_validator_cap_scenarios = dict((v, k) for k, v in max_validator_cap_scenarios.items())
     max_validator_cap_dropdown = _max_validator_cap_scenarios.get(max_validator_cap, 'Custom Value')

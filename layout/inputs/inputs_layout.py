@@ -3,8 +3,10 @@ import dash_core_components as dcc
 from datetime import datetime
 import json
 
-simulation_file = open('./data/simulation_data.json',)
-simulation_data = json.load(simulation_file)
+
+with open('./data/simulation_data.json', 'r') as simulation_file:
+    simulation_data = json.load(simulation_file)
+
 pos_dates_dropdown_poits = simulation_data['info']['parameters']['0']['points']
 eip1559_slider_points = simulation_data['info']['parameters']['1']['points']
 mid_eip1559_slider_point = eip1559_slider_points[len(eip1559_slider_points)//2]
