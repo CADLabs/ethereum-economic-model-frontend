@@ -1,6 +1,6 @@
 from dash.dependencies import Input, Output, State
 
-from ethereum_economic_model.model.system_parameters import parameters
+from model.system_parameters import parameters
 
 from app import app
 

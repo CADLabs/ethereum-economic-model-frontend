@@ -1,10 +1,13 @@
 import dash_html_components as html
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
+from dash_html_components.H2 import H2
+from layout.eth2_specs.eth2_specs import eth2_specs
+from layout.exogenous_processes.exogenous_processes import exogenous_processes
 
 import copy
 import json
 from datetime import datetime
-
 
 simulation_file = open('./data/simulation_data.json',)
 simulation_data = json.load(simulation_file)
