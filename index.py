@@ -1,7 +1,11 @@
 import argparse
 
-from app import app
+from app import app, server
 from utils.auth import load_basic_auth
+from layout.eth2_specs.eth2_specs_callbacks import toggle_collapse_eth2
+from layout.validator_specs.validator_specs_callbacks import (toggle_collapse_validator,
+                                                              load_validator_specs_defaults,
+                                                              calc_total_validator_distribution)
 
 
 if __name__ == "__main__":
