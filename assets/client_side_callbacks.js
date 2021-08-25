@@ -1,7 +1,14 @@
 window.dash_clientside = Object.assign({}, window.dash_clientside, {
     clientside: {
+        update_max_validator_cap_slider_function: function(MaxValidatorCapDropdown) {
+            MaxValidatorScenarios = {'No Validator Cap': 0, "Vitalik's Proposal (max 524K validators)": 524}
+            if (MaxValidatorCapDropdown === 'Custom Value'){
+                return window.dash_clientside.no_update
+            }
+            return MaxValidatorScenarios[MaxValidatorCapDropdown]
+        },
         update_eip1559_slider_function: function(EIP1559Dropdown) {
-            EIP1559Scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30, }
+            EIP1559Scenarios = {'Disabled (Base Fee = 0)': 0, 'Enabled (Base Fee = 30)': 30}
             if (EIP1559Dropdown === 'Enabled (Custom Value)'){
                 return window.dash_clientside.no_update
             }
