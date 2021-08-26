@@ -1,16 +1,11 @@
 # Dash dependencies
 import dash
-import dash_bootstrap_components as dbc
-from dash.dependencies import ClientsideFunction, Input, Output, State
-from utils import visualizations
+from dash.dependencies import ClientsideFunction, Input, Output
 import flask
 from flask_talisman import Talisman
 
 # Additional dependencies
-import json
 import copy
-import pandas as pd
-from datetime import datetime
 
 # Import layout components
 from layout.layout import layout, fig_data, fig_validator_yields

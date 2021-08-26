@@ -1,7 +1,8 @@
 from dash.dependencies import Input, Output, State
 
 from app import app
-from model.system_parameters import parameters
+from ethereum_economic_model.model.system_parameters import parameters
+
 
 @app.callback(
     Output("collapse-eth2", "is_open"),

@@ -3,6 +3,8 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import plotly.express as px
 import pandas as pd
+
+
 # Load initial charts from csv file
 initial_df = pd.read_csv('data/data.csv', index_col=0)
 initial_df['total_revenue_yields_%'] = initial_df['total_revenue_yields'] * 100
