@@ -2,23 +2,16 @@
 import dash
 from dash.dependencies import ClientsideFunction, Input, Output, State
 import flask
-from flask_talisman import Talisman
+#from flask_talisman import Talisman
 
 # Additional dependencies
-import json
-import gzip
 import copy
 import pandas as pd
+import ijson
 from datetime import datetime
 
 # Import layout components
 from layout.layout import layout
-
-with gzip.open('./data/plots_data_new.json.gz', 'r') as fin:
-    fig_data = json.loads(fin.read().decode('utf-8'))
-
-with gzip.open('./data/plots_validator_yields.json.gz', 'r') as fin:
-    fig_validator_yields = json.loads(fin.read().decode('utf-8'))
 
 
 # Configure scenarios
@@ -218,11 +211,26 @@ def update_output_graph(max_validator_cap,
 
     _eip1559_basefee_scenarios = dict((v, k) for k, v in eip1559_basefee_scenarios.items())
     eip1559_dropdown = _eip1559_basefee_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
-
     
-    mobile_figure = copy.deepcopy(fig_data[LookUp])
+    f_supply = open('./data/eth_supply_plots.json')
+    objects_supply = ijson.items(f_supply, LookUp)
+    for item in objects_supply:
+        fig_data = item['data']
+    
+    f_supply_layout = open('./data/eth_supply_plots.json')
+    objects_supply_layout = ijson.items(f_supply_layout, 'layout')
+    for item in objects_supply_layout:
+        fig_data_layout = item
+    
+
+    fig_supply = {
+        "data": fig_data,
+        "layout": fig_data_layout
+    }
+
+    mobile_figure = copy.deepcopy(fig_supply)
     mobile_figure["layout"]["annotations"].clear() 
-    desktop_figure = fig_data[LookUp]
+    desktop_figure = fig_supply
     
     return (
         max_validator_cap_dropdown,
@@ -262,15 +270,22 @@ def update_validator_yields_graph(max_validator_cap,
              mev_string + ':' +
              str(validator_adoption) + ':' +
               max_validator_cap_values[max_validator_cap])
-    validator_yields_data = fig_validator_yields[LookUp]['data']
+    
+    f_yields = open('./data/plots_validator_yields.json')
+    objects_yields = ijson.items(f_yields, LookUp)
+    for item in objects_yields:
+        fig_yields = item
+  
+    #validator_yields_data = fig_validator_yields[LookUp]['data']
 
-    for item in validator_yields_data:
-        item.update({'x': fig_validator_yields['data_x']})
+    #for item in validator_yields_data:
+    #    item.update({'x': fig_validator_yields['data_x']})
 
-    validator_yields_figure = {
-       'layout': fig_validator_yields['layout'],
-       'data': validator_yields_data
-    }
+    validator_yields_figure = fig_yields
+    #{
+    #   'layout': fig_validator_yields['layout'],
+    #   'data': validator_yields_data
+    #}
 
     _max_validator_cap_scenarios = dict((v, k) for k, v in max_validator_cap_scenarios.items())
     max_validator_cap_dropdown = _max_validator_cap_scenarios.get(max_validator_cap, 'Custom Value')
