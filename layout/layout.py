@@ -17,8 +17,8 @@ fig_validator_yields = json.load(plots_validator_yields_file)
 
 
 initial_fig_eth_supply = {
-    'layout':fig_data['2022-3-1:30:3']["layout"],
-    'data': fig_data["historical"]["data"] + fig_data['2022-3-1:30:3']["data"]
+    'layout':fig_data["layout"],
+    'data': fig_data['2022-3-1:30:3']["data"]
 }
 initial_fig_eth_supply_mobile = copy.deepcopy(initial_fig_eth_supply)
 initial_fig_eth_supply_mobile["layout"]["annotations"].clear() 
