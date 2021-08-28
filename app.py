@@ -169,10 +169,6 @@ app.clientside_callback(
 def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fee): 
     pos_launch_date = pos_dates_dropdown_poits[pos_launch_date_idx]
     LookUp = str(pos_launch_date) + ':' + str(eip1559_base_fee) + ':' + str(validator_adoption)
-    HistoricalPlotData = fig_data["historical"]["data"]
-    if (len(fig_data[LookUp]["data"]) < 6):
-        fig_data[LookUp]["data"] = HistoricalPlotData + fig_data[LookUp]["data"]
-
 
     _validator_scenarios = dict((v, k) for k, v in validator_scenarios.items())
     validator_dropdown = _validator_scenarios.get(validator_adoption, 'Custom Value')
@@ -183,10 +179,14 @@ def update_output_graph(validator_adoption, pos_launch_date_idx, eip1559_base_fe
     _eip1559_basefee_scenarios = dict((v, k) for k, v in eip1559_basefee_scenarios.items())
     eip1559_dropdown = _eip1559_basefee_scenarios.get(eip1559_base_fee, 'Enabled (Custom Value)')
 
+    fig_eth_supply = {
+    'layout':fig_data["layout"],
+    'data': fig_data[LookUp]["data"]
+    }
     
-    mobile_figure = copy.deepcopy(fig_data[LookUp])
+    mobile_figure = copy.deepcopy(fig_eth_supply)
     mobile_figure["layout"]["annotations"].clear() 
-    desktop_figure = fig_data[LookUp]
+    desktop_figure = fig_eth_supply
     
     return (
         validator_dropdown,
@@ -219,7 +219,7 @@ def update_validator_yields_graph(validator_adoption,
 
 
     LookUp = str(pos_launch_date) + ':' + str(priority_fee) + ':' + mev_string + ':' + str(validator_adoption)
-    validator_yields_data = fig_validator_yields[LookUp]
+    validator_yields_data = fig_validator_yields[LookUp]['data']
 
     for item in validator_yields_data:
         item.update({'x': fig_validator_yields['x']})
