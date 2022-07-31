@@ -42,7 +42,7 @@ To execute the dashboard in the development version (without authentication):
 python index.py --dev
 ```
 
-After executing the command, the dash app will run locally. The defaul dash port is http://127.0.0.1:8050/.
+After executing the command, the dash app will run locally. The default dash port is http://127.0.0.1:8050/.
 
 ## Deployment
 
