@@ -30,13 +30,6 @@ pos_dates_dropdown_poits = [
 
 # define flask app.server
 server = flask.Flask(__name__)
-csp = {
-    'default-src':['\'self\'', '\'unsafe-inline\''],
-    'script-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\''],
-    'style-src': ['\'self\'', '\'unsafe-inline\''],
-    'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
-}
-Talisman(server, content_security_policy=csp)
 
 app = dash.Dash(__name__,
                 server=server,
@@ -251,4 +244,11 @@ def update_validator_yields_graph(validator_adoption,
 
 
 if __name__ == '__main__':
+    csp = {
+        'default-src':['\'self\'', '\'unsafe-inline\''],
+        'script-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\''],
+        'style-src': ['\'self\'', '\'unsafe-inline\''],
+        'img-src': ['\'self\'', '\'unsafe-eval\'', '\'unsafe-inline\'', 'data:'], 
+    }
+    Talisman(app.server, content_security_policy=csp)
     app.run_server(debug=False)
