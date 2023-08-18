@@ -4,11 +4,13 @@ dash-auth==1.4.1
 dash-core-components==1.15.0
 dash-html-components==1.1.2
 Flask==1.1.2
+itsdangerous==2.0.1
 flask-talisman==0.8.1
-python-dotenv
-Werkzeug==1.0.1
+python-dotenv==1.0.0
+Werkzeug==2.0.3
 Jinja2==2.11.3
 markupsafe==2.0.1
+
 # appdirs==1.4.4
 # appnope==0.1.2
 # argcomplete==1.12.3
