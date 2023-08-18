@@ -1,2 +1,6 @@
 data/plots_validator_yields.json filter=lfs diff=lfs merge=lfs -text
 *.json filter=lfs diff=lfs merge=lfs -text
+data/fig_cumulative_revenue_yields.json filter=lfs diff=lfs merge=lfs -text
+data/no_x_new_plots_validator_yields.json filter=lfs diff=lfs merge=lfs -text
+data/plots_data.json filter=lfs diff=lfs merge=lfs -text
+data/simulation_data.json filter=lfs diff=lfs merge=lfs -text
