@@ -46,5 +46,5 @@ After executing the command, the dash app will run locally. The default dash por
 
 ## Deployment
 
-The current version of the dashboard is deployed at https://eth2-calculator.herokuapp.com/.
+The current version of the dashboard is deployed at https://ethmodel.io.
  
