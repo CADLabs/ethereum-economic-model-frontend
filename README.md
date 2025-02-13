@@ -1,5 +1,7 @@
 # CADLabs Ethereum Economic Model Frontend
 
+Frontend for the [CADLabs Ethereum Economic Model](https://ethereum-economic-model.cadlabs.org/) hosted at https://ethmodel.io.
+
 ## Directory Structure
 * [assets/](assets/): CSS styles and assets
 * [data/](data/): preloaded datasets used by the dashboard
