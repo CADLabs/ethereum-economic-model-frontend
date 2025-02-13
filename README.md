@@ -1,11 +1,4 @@
-# CADLabs Ethereum Validator Economics Model Dashboard
-
-## Table of Contents
-* [Directory Structure](#directory-structure)
-* [Development](#development)
-* [Deployment](#deployment)
-
----
+# CADLabs Ethereum Economic Model Frontend
 
 ## Directory Structure
 * [assets/](assets/): CSS styles and assets
